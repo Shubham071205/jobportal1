@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal - Home</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-image: url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* ================= NAVBAR ================= */
+        .navbar {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            padding: 15px 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a {
+            color: white;
+            margin-left: 25px;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffcc00;
+        }
+
+        /* ================= HERO ================= */
+        .hero {
+            min-height: 75vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            color: white;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 800px;
+            padding: 20px;
+            animation: fadeUp 1.2s ease forwards;
+        }
+
+        .hero h2 {
+            font-size: 44px;
+            margin-bottom: 15px;
+        }
+
+        .hero h2 span {
+            color: #ffcc00;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .hero-btns a {
+            display: inline-block;
+            padding: 12px 28px;
+            margin: 8px;
+            border-radius: 8px;
+            font-size: 16px;
+            text-decoration: none;
+            transition: 0.4s;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,123,255,0.6);
+        }
+
+        .btn-outline {
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: #004aad;
+            transform: translateY(-5px);
+        }
+
+        /* ================= CARDS ================= */
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 70px auto;
+            width: 90%;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            width: 300px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            text-align: center;
+            transition: 0.4s;
+        }
+
+        .card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        }
+
+        .card h3 {
+            color: #004aad;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 22px;
+            margin-top: 15px;
+            background: #004aad;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #003580;
+            transform: scale(1.05);
+        }
+
+        /* ================= FOOTER ================= */
+        footer {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            padding: 50px 20px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #ffcc00;
+        }
+
+        footer hr {
+            margin: 40px auto 20px;
+            border-color: rgba(255,255,255,0.3);
+            width: 90%;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h1>Job Portal</h1>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/login-jobseeker/">Job Seeker</a>
+        <a href="/login-jobprovider/">Job Provider</a>
+        <a href="/admin-login/">Admin</a>
+    </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-content">
+        <h2>Build Your Career with <span>Job Portal</span></h2>
+        <p>Find verified jobs, apply easily, and hire the best talent — all in one trusted platform.</p>
+        <div class="hero-btns">
+            <a href="/login-jobseeker/" class="btn-primary">I'm a Job Seeker</a>
+            <a href="/login-jobprovider/" class="btn-outline">I'm a Job Provider</a>
+        </div>
+    </div>
+</div>
+
+<!-- CARDS -->
+<div class="cards">
+
+    <div class="card">
+        <h3>Job Seeker</h3>
+        <p>Search jobs, apply online, track applications.</p>
+        <a class="btn" href="/login-jobseeker/">Login</a>
+    </div>
+
+    <div class="card">
+        <h3>Job Provider</h3>
+        <p>Post jobs, manage applicants, hire talent.</p>
+        <a class="btn" href="/login-jobprovider/">Login</a>
+    </div>
+
+    <div class="card">
+        <h3>Admin Panel</h3>
+        <p>Manage users, jobs, providers and system.</p>
+        <a class="btn" href="/admin-login/">Admin Login</a>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div style="max-width:1200px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:40px;">
+        <div>
+            <h2>Job Portal</h2>
+            <p>Connecting job seekers and verified companies.</p>
+        </div>
+        <div>
+            <h3>Quick Links</h3><br>
+            <a href="/">Home</a><br><br>
+            <a href="/login-jobseeker/">Job Seeker</a><br><br>
+            <a href="/login-jobprovider/">Job Provider</a>
+        </div>
+        <div>
+            <h3>Contact</h3>
+            <p>Email: support@jobportal.com</p>
+            <p>Phone: +91 7574010823</p>
+            <p>Ahmedabad, Gujarat</p>
+        </div>
+    </div>
+    <hr>
+    <p style="text-align:center;">© 2025 Job Portal. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>

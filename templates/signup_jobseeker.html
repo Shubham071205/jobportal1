@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Seeker Signup</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* MAIN CONTAINER */
+        .main {
+            width: 950px;
+            height: 560px;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(14px);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            display: flex;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* LEFT PANEL */
+        .left {
+            flex: 1;
+            padding: 60px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .left h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .left p {
+            font-size: 15px;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
+        /* RIGHT PANEL */
+        .right {
+            width: 400px;
+            background: white;
+            padding: 40px 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .right h2 {
+            text-align: center;
+            color: #203a43;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #203a43;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .login {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 13px;
+        }
+
+        .login a {
+            color: #203a43;
+            text-decoration: underline;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .main {
+                width: 95%;
+                height: auto;
+                flex-direction: column;
+            }
+            .right {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main">
+
+    <!-- LEFT CONTENT -->
+    <div class="left">
+        <h1>Create Your Account</h1>
+        <p>
+            Join Job Portal and unlock access to verified job opportunities.
+            Build your career, apply with confidence, and grow professionally.
+        </p>
+    </div>
+
+    <!-- RIGHT SIGNUP FORM -->
+    <div class="right">
+        <h2>Job Seeker Signup</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="fullname" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+
+            <button class="btn" type="submit">CREATE ACCOUNT</button>
+        </form>
+
+        <div class="login">
+            Already have an account?
+            <a href="/login-jobseeker/">Login</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
