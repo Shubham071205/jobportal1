@@ -2,165 +2,362 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Provider Login</title>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
+        /* ================= BASE ================= */
         body {
-            height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* MAIN CONTAINER */
-        .main {
-            width: 900px;
-            height: 520px;
-            background: rgba(255,255,255,0.12);
-            backdrop-filter: blur(14px);
-            border-radius: 16px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            display: flex;
-            overflow: hidden;
-            animation: fadeIn 0.8s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.97); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* LEFT PANEL */
-        .left {
-            flex: 1;
-            padding: 60px;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .left h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-
-        .left p {
-            font-size: 15px;
-            line-height: 1.7;
-            opacity: 0.9;
-        }
-
-        /* RIGHT PANEL */
-        .right {
-            width: 360px;
-            background: white;
-            padding: 45px 35px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .right h2 {
-            text-align: center;
-            color: #203a43;
-            margin-bottom: 25px;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 14px;
-            outline: none;
-        }
-
-        input:focus {
-            border-color: #203a43;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
+        /* ================= NAVBAR ================= */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
             background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            padding: 15px 30px;
             color: white;
-            border: none;
-            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a {
+            color: white;
+            margin-left: 25px;
+            text-decoration: none;
             font-size: 15px;
-            cursor: pointer;
             transition: 0.3s;
         }
 
-        .btn:hover {
-            opacity: 0.9;
+        .nav-links a:hover {
+            color: #ffcc00;
         }
 
-        .signup {
+        /* ================= LOGIN CONTAINER ================= */
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            animation: fadeUp 1s ease;
+            margin-top: 60px;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-header {
             text-align: center;
-            margin-top: 18px;
-            font-size: 18px;
+            margin-bottom: 30px;
         }
 
-        .signup a {
-            color: #203a43;
+        .login-header h2 {
+            color: #0f2027;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .login-header .icon {
+            font-size: 48px;
+            color: #004aad;
+            margin-bottom: 15px;
+        }
+
+        /* ================= FORM ================= */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #004aad;
+            box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
+        }
+
+        /* ================= BUTTONS ================= */
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #004aad, #007bff);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(-1px);
+        }
+
+        /* ================= MESSAGES ================= */
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-align: center;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .alert-error {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border-left: 4px solid #dc3545;
+        }
+
+        .alert-success {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            border-left: 4px solid #28a745;
+        }
+
+        /* ================= LINKS ================= */
+        .links {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #eee;
+        }
+
+        .links a {
+            color: #004aad;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .links a:hover {
+            color: #003580;
             text-decoration: underline;
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            .main {
-                width: 95%;
-                height: auto;
-                flex-direction: column;
+        .links p {
+            margin: 8px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* ================= FOOTER ================= */
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .login-footer a {
+            color: #004aad;
+            text-decoration: none;
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 20px;
+                padding: 30px;
             }
-            .right {
-                width: 100%;
+
+            .navbar {
+                padding: 15px;
+            }
+
+            .nav-links a {
+                margin-left: 15px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 25px;
+                margin: 15px;
+            }
+
+            .login-header h2 {
+                font-size: 24px;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="main">
-
-    <!-- LEFT CONTENT -->
-    <div class="left">
-        <h1>Welcome Job Provider</h1>
-        <p>
-            Post job openings, manage applications, and hire the best talent.
-            Everything you need to grow your company is right here.
-        </p>
-    </div>
-
-    <!-- RIGHT LOGIN FORM -->
-    <div class="right">
-        <h2>Provider Login</h2>
-
-        <form method="POST">
-            {% csrf_token %}
-            <input type="text" name="username" placeholder="Company Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-
-            <button class="btn" type="submit">LOGIN</button>
-        </form>
-
-        <div class="signup">
-            New provider?
-            <a href="/signup-jobprovider/">Create account</a>
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>Job Portal</h1>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/login-jobseeker/">Job Seeker</a>
+            <a href="/login-jobprovider/">Job Provider</a>
+            <a href="/admin-login/">Admin</a>
         </div>
     </div>
 
-</div>
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-header">
+            <div class="icon">🏢</div>
+            <h2>Job Provider Login</h2>
+            <p>Access your company dashboard</p>
+        </div>
+
+        <!-- Messages -->
+        <div class="messages">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <!-- Login Form -->
+        <form method="POST" action="{% url 'login_jobprovider' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="username">Email / Username</label>
+                <input type="text"
+                       id="username"
+                       name="username"
+                       class="form-control"
+                       placeholder="Enter your email"
+                       required
+                       autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password"
+                       id="password"
+                       name="password"
+                       class="form-control"
+                       placeholder="Enter your password"
+                       required>
+            </div>
+
+            <button type="submit" class="btn-login">
+                Login to Dashboard
+            </button>
+        </form>
+
+        <!-- Links -->
+        <div class="links">
+            <p>Don't have an account? <a href="{% url 'signup_jobprovider' %}">Sign up as Job Provider</a></p>
+            <p>Job Seeker? <a href="{% url 'login_jobseeker' %}">Login as Job Seeker</a></p>
+            <p><a href="/">← Back to Home</a></p>
+        </div>
+
+        <!-- Footer -->
+        <div class="login-footer">
+            <p>© 2025 Job Portal. Job Provider Panel</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        console.log("Job Provider Login page loaded");
+
+        // Focus on username field
+        document.getElementById('username').focus();
+
+        // Add animation to form elements
+        document.querySelectorAll('.form-control').forEach((input, index) => {
+            input.style.animationDelay = `${index * 0.1}s`;
+            input.style.animation = 'fadeUp 0.5s ease forwards';
+        });
+
+        // Check URL for redirect messages
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('next')) {
+            console.log('Redirect required to:', urlParams.get('next'));
+        }
+
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!username || !password) {
+                e.preventDefault();
+                alert('Please fill in all fields');
+                return false;
+            }
+
+            // Show loading state
+            const btn = document.querySelector('.btn-login');
+            btn.innerHTML = 'Logging in...';
+            btn.disabled = true;
+        });
+    </script>
 
 </body>
 </html>

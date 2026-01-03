@@ -124,6 +124,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
-LOGIN_URL = '/login-jobseeker/'
-LOGIN_REDIRECT_URL = '/jobseeker/dashboard/'
+LOGIN_URL = '/login-jobprovider/'
+LOGIN_REDIRECT_URL = '/jobprovider/dashboard/'
 LOGOUT_REDIRECT_URL = '/'

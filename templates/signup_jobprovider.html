@@ -2,168 +2,477 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Provider Signup</title>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
+        /* ================= BASE ================= */
         body {
-            height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* MAIN CONTAINER */
-        .main {
-            width: 950px;
-            height: 560px;
-            background: rgba(255,255,255,0.12);
-            backdrop-filter: blur(14px);
-            border-radius: 16px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            display: flex;
-            overflow: hidden;
-            animation: fadeIn 0.8s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.97); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* LEFT PANEL */
-        .left {
-            flex: 1;
-            padding: 60px;
+        /* ================= NAVBAR ================= */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            padding: 15px 30px;
             color: white;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
         }
 
-        .left h1 {
-            font-size: 36px;
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a {
+            color: white;
+            margin-left: 25px;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffcc00;
+        }
+
+        /* ================= SIGNUP CONTAINER ================= */
+        .signup-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            animation: fadeUp 1s ease;
+            margin-top: 60px;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .signup-header h2 {
+            color: #0f2027;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .signup-header p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .signup-header .icon {
+            font-size: 48px;
+            color: #004aad;
+            margin-bottom: 15px;
+        }
+
+        /* ================= FORM ================= */
+        .form-group {
             margin-bottom: 20px;
         }
 
-        .left p {
-            font-size: 15px;
-            line-height: 1.7;
-            opacity: 0.9;
-        }
-
-        /* RIGHT PANEL */
-        .right {
-            width: 400px;
-            background: white;
-            padding: 40px 35px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .right h2 {
-            text-align: center;
-            color: #203a43;
-            margin-bottom: 25px;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 14px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
             font-size: 14px;
-            outline: none;
         }
 
-        input:focus {
-            border-color: #203a43;
+        .form-group label span {
+            color: #dc3545;
+            margin-left: 3px;
         }
 
-        .btn {
+        .form-control {
             width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #004aad;
+            box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
+        }
+
+        /* ================= BUTTONS ================= */
+        .btn-signup {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #28a745, #20c997);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
-            margin-top: 10px;
+            transition: all 0.4s;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
         }
 
-        .btn:hover {
-            opacity: 0.9;
+        .btn-signup:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
         }
 
-        .login {
+        .btn-signup:active {
+            transform: translateY(-1px);
+        }
+
+        /* ================= MESSAGES ================= */
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
             text-align: center;
-            margin-top: 18px;
-            font-size: 18px;
+            animation: slideIn 0.5s ease;
         }
 
-        .login a {
-            color: #203a43;
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .alert-error {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border-left: 4px solid #dc3545;
+        }
+
+        .alert-success {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            border-left: 4px solid #28a745;
+        }
+
+        /* ================= PASSWORD STRENGTH ================= */
+        .password-strength {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .strength-meter {
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            background: #dc3545;
+            transition: all 0.3s;
+        }
+
+        /* ================= LINKS ================= */
+        .links {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #eee;
+        }
+
+        .links a {
+            color: #004aad;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .links a:hover {
+            color: #003580;
             text-decoration: underline;
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            .main {
-                width: 95%;
-                height: auto;
-                flex-direction: column;
+        .links p {
+            margin: 8px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* ================= FOOTER ================= */
+        .signup-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .signup-footer a {
+            color: #004aad;
+            text-decoration: none;
+        }
+
+        /* ================= TERMS ================= */
+        .terms {
+            margin: 15px 0;
+            font-size: 13px;
+            color: #666;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .terms input[type="checkbox"] {
+            margin-top: 3px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 768px) {
+            .signup-container {
+                margin: 20px;
+                padding: 30px;
             }
-            .right {
-                width: 100%;
+
+            .navbar {
+                padding: 15px;
+            }
+
+            .nav-links a {
+                margin-left: 15px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: 25px;
+                margin: 15px;
+            }
+
+            .signup-header h2 {
+                font-size: 24px;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="main">
-
-    <!-- LEFT CONTENT -->
-    <div class="left">
-        <h1>Register Your Company</h1>
-        <p>
-            Create a Job Provider account to post jobs, review applicants,
-            and hire skilled professionals for your organization.
-        </p>
-    </div>
-
-    <!-- RIGHT SIGNUP FORM -->
-    <div class="right">
-        <h2>Provider Signup</h2>
-
-        <form method="POST">
-            {% csrf_token %}
-            <input type="text" name="company_name" placeholder="Company Name" required>
-            <input type="email" name="email" placeholder="Company Email" required>
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-
-            <button class="btn" type="submit">CREATE ACCOUNT</button>
-        </form>
-
-        <div class="login">
-            Already registered?
-            <a href="/login-jobprovider/">Login</a>
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>Job Portal</h1>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/login-jobseeker/">Job Seeker</a>
+            <a href="/login-jobprovider/">Job Provider</a>
+            <a href="/admin-login/">Admin</a>
         </div>
     </div>
 
-</div>
+    <!-- Signup Container -->
+    <div class="signup-container">
+        <div class="signup-header">
+            <div class="icon">🏢</div>
+            <h2>Job Provider Signup</h2>
+            <p>Create your company account</p>
+        </div>
+
+        <!-- Messages -->
+        <div class="messages">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <!-- Signup Form -->
+        <form method="POST" action="{% url 'signup_jobprovider' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="fullname">Company Name <span>*</span></label>
+                <input type="text"
+                       id="fullname"
+                       name="fullname"
+                       class="form-control"
+                       placeholder="Enter your company name"
+                       required
+                       autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address <span>*</span></label>
+                <input type="email"
+                       id="email"
+                       name="email"
+                       class="form-control"
+                       placeholder="Enter company email"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password <span>*</span></label>
+                <input type="password"
+                       id="password"
+                       name="password"
+                       class="form-control"
+                       placeholder="Create a strong password"
+                       required
+                       minlength="6">
+                <div class="password-strength">
+                    <div>Password strength: <span id="strength-text">Weak</span></div>
+                    <div class="strength-meter">
+                        <div class="strength-fill" id="strength-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">
+                    I agree to the <a href="#" style="color: #004aad;">Terms of Service</a> and
+                    <a href="#" style="color: #004aad;">Privacy Policy</a>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-signup">
+                Create Company Account
+            </button>
+        </form>
+
+        <!-- Links -->
+        <div class="links">
+            <p>Already have an account? <a href="{% url 'login_jobprovider' %}">Login here</a></p>
+            <p>Looking for a job? <a href="{% url 'signup_jobseeker' %}">Sign up as Job Seeker</a></p>
+            <p><a href="/">← Back to Home</a></p>
+        </div>
+
+        <!-- Footer -->
+        <div class="signup-footer">
+            <p>© 2025 Job Portal. For Companies & Recruiters</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        console.log("Job Provider Signup page loaded");
+
+        // Focus on company name field
+        document.getElementById('fullname').focus();
+
+        // Password strength checker
+        const passwordInput = document.getElementById('password');
+        const strengthText = document.getElementById('strength-text');
+        const strengthFill = document.getElementById('strength-fill');
+
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+
+            // Check password criteria
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            // Update strength meter
+            const width = strength * 20;
+            strengthFill.style.width = width + '%';
+
+            // Update strength text and color
+            if (strength <= 1) {
+                strengthText.textContent = 'Weak';
+                strengthFill.style.background = '#dc3545';
+            } else if (strength <= 3) {
+                strengthText.textContent = 'Medium';
+                strengthFill.style.background = '#ffc107';
+            } else {
+                strengthText.textContent = 'Strong';
+                strengthFill.style.background = '#28a745';
+            }
+        });
+
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const companyName = document.getElementById('fullname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const terms = document.getElementById('terms').checked;
+
+            if (!companyName || !email || !password) {
+                e.preventDefault();
+                alert('Please fill in all required fields');
+                return false;
+            }
+
+            if (!terms) {
+                e.preventDefault();
+                alert('Please agree to the Terms of Service and Privacy Policy');
+                return false;
+            }
+
+            if (password.length < 6) {
+                e.preventDefault();
+                alert('Password must be at least 6 characters long');
+                return false;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                e.preventDefault();
+                alert('Please enter a valid email address');
+                return false;
+            }
+
+            // Show loading state
+            const btn = document.querySelector('.btn-signup');
+            btn.innerHTML = 'Creating Account...';
+            btn.disabled = true;
+        });
+
+        // Add animation to form elements
+        document.querySelectorAll('.form-control').forEach((input, index) => {
+            input.style.animationDelay = `${index * 0.1}s`;
+            input.style.animation = 'fadeUp 0.5s ease forwards';
+        });
+    </script>
 
 </body>
 </html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Provider Dashboard</title>
+
+    <style>
+        /* ================= BASE ================= */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* ================= NAVBAR ================= */
+        .navbar {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            padding: 15px 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a {
+            color: white;
+            margin-left: 25px;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.3s;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: #ffcc00;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links .logout {
+            background: #dc3545;
+            padding: 8px 20px;
+            border-radius: 8px;
+        }
+
+        .nav-links .logout:hover {
+            background: #c82333;
+            color: white;
+        }
+
+        /* ================= SIDEBAR ================= */
+        .sidebar {
+            width: 250px;
+            background: rgba(15, 32, 39, 0.95);
+            color: white;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            height: calc(100vh - 70px);
+            padding-top: 30px;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #ffcc00;
+            font-size: 22px;
+            padding: 0 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 15px 30px;
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+            border-left: 4px solid transparent;
+            margin: 5px 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255, 204, 0, 0.1);
+            border-left: 4px solid #ffcc00;
+            color: #ffcc00;
+        }
+
+        .sidebar a.active {
+            background: rgba(255, 204, 0, 0.15);
+            border-left: 4px solid #ffcc00;
+            color: #ffcc00;
+            font-weight: 500;
+        }
+
+        /* ================= MAIN CONTENT ================= */
+        .main {
+            margin-left: 270px;
+            margin-top: 80px;
+            padding: 30px;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* ================= HEADER ================= */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border-left: 5px solid #ffcc00;
+            animation: fadeUp 0.8s ease;
+        }
+
+        .welcome-text {
+            font-size: 28px;
+            font-weight: 600;
+            color: #0f2027;
+            margin-bottom: 20px;
+        }
+
+        .welcome-text span {
+            color: #004aad;
+        }
+
+        /* ================= STATS CARDS ================= */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            text-align: center;
+            transition: all 0.4s;
+            border-top: 4px solid #004aad;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+
+        .stat-card h3 {
+            font-size: 36px;
+            margin: 15px 0;
+            color: #004aad;
+            font-weight: 700;
+        }
+
+        .stat-card p {
+            color: #555;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* ================= JOB LIST ================= */
+        .job-list {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            animation: fadeUp 1s ease;
+        }
+
+        .job-list h2 {
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: #0f2027;
+            font-size: 22px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .post-btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #004aad, #007bff);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.4s;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .post-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        .job-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s;
+            border-radius: 8px;
+        }
+
+        .job-row:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+        .job-row:last-child {
+            border-bottom: none;
+        }
+
+        .job-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .job-applicants {
+            background: #e7f1ff;
+            color: #004aad;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .no-jobs {
+            text-align: center;
+            padding: 50px 20px;
+            color: #666;
+        }
+
+        .no-jobs p {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        /* ================= DEBUG INFO ================= */
+        .debug-info {
+            background: rgba(15, 32, 39, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #ffcc00;
+            font-size: 14px;
+        }
+
+        .debug-info strong {
+            color: #0f2027;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .debug-info p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        /* ================= AUTH WARNING ================= */
+        .auth-warning {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: #dc3545;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            z-index: 999;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .auth-warning a {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .auth-warning a:hover {
+            text-decoration: underline;
+        }
+
+        /* ================= ANIMATIONS ================= */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main {
+                margin-left: 220px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                top: 0;
+                height: auto;
+                padding: 20px;
+                margin-top: 70px;
+            }
+            .main {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Authentication Warning -->
+    {% if not user.is_authenticated %}
+    <div class="auth-warning">
+        ⚠️ You are not logged in! Please login to access the dashboard.
+        <a href="{% url 'login_jobprovider' %}">Login Now</a>
+    </div>
+    {% endif %}
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>Job Portal</h1>
+        <div class="nav-links">
+            <span style="color: #ffcc00; margin-right: 15px;">👋 {{ request.user.first_name|default:request.user.username }}</span>
+            <a href="/jobprovider/dashboard/">Dashboard</a>
+            <a href="#">Profile</a>
+            <a href="/logout/" class="logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Provider Dashboard</h2>
+        <a href="/jobprovider/dashboard/" class="active">📊 Dashboard</a>
+        <a href="#">📝 Post New Job</a>
+        <a href="#">👥 View Applicants</a>
+        <a href="#">🏢 Company Profile</a>
+        <a href="#">⚙️ Settings</a>
+        <a href="/logout/">🚪 Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+
+        <!-- Welcome Header -->
+        <div class="header">
+            <div class="welcome-text">
+                Welcome back, <span>{{ request.user.first_name|default:request.user.username }}</span>! 👋
+            </div>
+
+            <!-- Debug Information -->
+            <div class="debug-info">
+                <strong>Account Information:</strong>
+                <p>Username: <strong>{{ request.user.username }}</strong></p>
+                <p>Email: {{ request.user.email }}</p>
+                <p>Account Type: {% if request.user.is_staff %}Job Provider{% else %}Job Seeker{% endif %}</p>
+                <p>Total Jobs: {{ jobs|length }}</p>
+                <p>Status: {% if request.user.is_authenticated %}✅ Active{% else %}❌ Inactive{% endif %}</p>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats">
+            <div class="stat-card">
+                <h3>{{ jobs|length }}</h3>
+                <p>Posted Jobs</p>
+            </div>
+            <div class="stat-card">
+                <h3>
+                    {% with total=0 %}
+                        {% for job in jobs %}
+                            {% with total=total|add:job.applicants %}
+                            {% endwith %}
+                        {% endfor %}
+                        {{ total|default:"0" }}
+                    {% endwith %}
+                </h3>
+                <p>Total Applicants</p>
+            </div>
+            <div class="stat-card">
+                <h3>12</h3>
+                <p>Today's Applications</p>
+            </div>
+            <div class="stat-card">
+                <h3>4</h3>
+                <p>Active Positions</p>
+            </div>
+        </div>
+
+        <!-- Job List Section -->
+        <div class="job-list">
+            <div class="section-header">
+                <h2>Your Posted Jobs</h2>
+                <a href="#" class="post-btn">+ Post New Job</a>
+            </div>
+
+            {% if jobs %}
+                {% for job in jobs %}
+                <div class="job-row">
+                    <div class="job-title">{{ job.title }}</div>
+                    <div class="job-applicants">{{ job.applicants }} applicant{{ job.applicants|pluralize }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-jobs">
+                    <p>📭 You haven't posted any jobs yet</p>
+                    <p>Start hiring by posting your first job opportunity!</p>
+                    <a href="#" class="post-btn" style="margin-top: 20px;">Post Your First Job</a>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        console.log("Dashboard loaded successfully!");
+        console.log("User:", {
+            username: "{{ request.user.username }}",
+            authenticated: "{{ request.user.is_authenticated }}",
+            jobsCount: "{{ jobs|length }}"
+        });
+
+        // Check authentication
+        window.onload = function() {
+            const isAuthenticated = "{{ request.user.is_authenticated }}" === "True";
+            const username = "{{ request.user.username }}";
+
+            if (!isAuthenticated || username === "AnonymousUser") {
+                console.warn("User not authenticated");
+                if (!document.querySelector('.auth-warning')) {
+                    setTimeout(() => {
+                        alert("Session expired. Please login again.");
+                        window.location.href = "/login-jobprovider/";
+                    }, 1500);
+                }
+            }
+
+            // Highlight current page in sidebar
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.sidebar a').forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Add hover effects to job rows
+            document.querySelectorAll('.job-row').forEach(row => {
+                row.addEventListener('mouseenter', () => {
+                    row.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
+                });
+                row.addEventListener('mouseleave', () => {
+                    row.style.boxShadow = 'none';
+                });
+            });
+        };
+    </script>
+
+</body>
+</html>
