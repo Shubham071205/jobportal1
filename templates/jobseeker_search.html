@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Jobs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(180deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            padding: 25px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .main {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        input, button {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background: #203a43;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>Job Seeker</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="jobseeker_search.html">Search Jobs</a>
+    <a href="jobseeker_applications.html">My Applications</a>
+    <a href="jobseeker_profile.html">My Profile</a>
+</div>
+
+<div class="main">
+    <div class="section">
+        <h3>Search Jobs</h3><br>
+        <input type="text" placeholder="Job title">
+        <input type="text" placeholder="Location">
+        <button>Search</button>
+    </div>
+</div>
+
+</body>
+</html>

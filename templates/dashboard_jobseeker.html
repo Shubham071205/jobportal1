@@ -152,11 +152,12 @@
 <!-- SIDEBAR -->
 <div class="sidebar">
     <h2>Job Seeker</h2>
+
     <a href="{% url 'jobseeker_dashboard' %}">Dashboard</a>
-    <a href="#">Search Jobs</a>
-    <a href="#">My Applications</a>
-    <a href="#">My Profile</a>
-    <a href="/logout/">Logout</a>
+    <a href="{% url 'jobseeker_search' %}">Search Jobs</a>
+    <a href="{% url 'jobseeker_applications' %}">My Applications</a>
+    <a href="{% url 'jobseeker_profile' %}">My Profile</a>
+    <a href="{% url 'logout' %}">Logout</a>
 </div>
 
 <!-- MAIN CONTENT -->

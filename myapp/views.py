@@ -63,6 +63,20 @@ def jobseeker_dashboard(request):
     return render(request, 'dashboard_jobseeker.html')
 
 
+@login_required(login_url='login_jobseeker')
+def jobseeker_search(request):
+    return render(request, 'jobseeker_search.html')
+
+
+@login_required(login_url='login_jobseeker')
+def jobseeker_applications(request):
+    return render(request, 'jobseeker_applications.html')
+
+
+@login_required(login_url='login_jobseeker')
+def jobseeker_profile(request):
+    return render(request, 'jobseeker_profile.html')
+
 # ================= JOB PROVIDER =================
 
 def signup_jobprovider(request):
