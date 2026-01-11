@@ -376,10 +376,10 @@
     <div class="sidebar">
         <h2>Provider Dashboard</h2>
         <a href="/jobprovider/dashboard/" class="active">📊 Dashboard</a>
-        <a href="#">📝 Post New Job</a>
-        <a href="#">👥 View Applicants</a>
-        <a href="#">🏢 Company Profile</a>
-        <a href="#">⚙️ Settings</a>
+        <a href="{% url 'jobprovider_post_job' %}">📝 Post New Job</a>
+        <a href="{% url 'jobprovider_view_applications' %}">👥 View Applicants</a>
+        <a href="{% url 'jobprovider_company_profile' %}">🏢 Company Profile</a>
+        <a href="{% url 'jobprovider_settings' %}">⚙️ Settings</a>
         <a href="/logout/">🚪 Logout</a>
     </div>
 

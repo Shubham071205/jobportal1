@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post New Job</title>
+    <style>
+        body {
+            background: #0f2d36;
+            font-family: Poppins, sans-serif;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background: #0066ff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+{% include 'jobprovider_sidebar.html' %}
+
+<div class="content">
+    <div class="card">
+        <h2>Post New Job</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <input type="text" name="title" placeholder="Job Title" required>
+            <textarea name="description" placeholder="Job Description"></textarea>
+            <input type="text" name="skills" placeholder="Skills (Python, Django)">
+            <input type="text" name="location" placeholder="Location">
+            <input type="text" name="salary" placeholder="Salary">
+
+            <button type="submit">Publish Job</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

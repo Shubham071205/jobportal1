@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Company Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f4f7fb;
+            display: flex;
+        }
+
+        /* Sidebar space placeholder */
+        .main {
+            margin-left: 260px;
+            padding: 30px;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #203a43;
+            margin-bottom: 10px;
+        }
+
+        .label {
+            font-weight: 600;
+            margin-top: 18px;
+            color: #555;
+        }
+
+        .value {
+            margin-top: 6px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 22px;
+            background: #203a43;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #2c5364;
+        }
+
+        .edit-btn {
+            float: right;
+            background: #0d6efd;
+            margin-bottom: 15px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .value a {
+            color: #0d6efd;
+            word-break: break-all;
+        }
+
+        @media (max-width: 768px) {
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+{% include 'jobprovider_sidebar.html' %}
+
+<div class="main">
+    <div class="card">
+
+        {% if not edit_mode %}
+            <!-- ================= VIEW MODE ================= -->
+
+            <a href="?edit=true">
+                <button class="edit-btn">Edit Profile</button>
+            </a>
+
+            <h2>{{ request.user.first_name }}</h2>
+            <p>{{ request.user.email }}</p>
+
+            <div class="label">About Company</div>
+            <div class="value">
+                {{ company.about_company|default_if_none:"Company description not added yet." }}
+            </div>
+
+            <div class="label">Industry</div>
+            <div class="value">
+                {{ company.industry|default_if_none:"Not specified" }}
+            </div>
+
+            <div class="label">Company Size</div>
+            <div class="value">
+                {{ company.company_size|default_if_none:"Not specified" }}
+            </div>
+
+            <div class="label">Company Website</div>
+            <div class="value">
+                {% if company.website %}
+                    <a href="{{ company.website }}" target="_blank">{{ company.website }}</a>
+                {% else %}
+                    Not added
+                {% endif %}
+            </div>
+
+            <div class="label">Location</div>
+            <div class="value">
+                {{ company.location|default_if_none:"Not added" }}
+            </div>
+
+        {% else %}
+            <!-- ================= EDIT MODE ================= -->
+
+            <h2>Edit Company Profile</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <input type="text" name="company_name"
+                       value="{{ request.user.first_name }}"
+                       placeholder="Company Name"
+                       required>
+
+                <input type="email" name="email"
+                       value="{{ request.user.email }}"
+                       placeholder="Company Email"
+                       required>
+
+                <textarea name="about_company" rows="4"
+                          placeholder="About your company">{{ company.about_company }}</textarea>
+
+                <input type="text" name="industry"
+                       value="{{ company.industry }}"
+                       placeholder="Industry (IT, Manufacturing, etc)">
+
+                <input type="text" name="company_size"
+                       value="{{ company.company_size }}"
+                       placeholder="Company Size (e.g. 50-100 employees)">
+
+                <input type="text" name="website"
+                       value="{{ company.website }}"
+                       placeholder="Company Website">
+
+                <input type="text" name="location"
+                       value="{{ company.location }}"
+                       placeholder="Company Location">
+
+                <button type="submit">Save Profile</button>
+            </form>
+
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>

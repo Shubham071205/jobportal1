@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Search Jobs</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
@@ -18,11 +19,16 @@
             min-height: 100vh;
         }
 
+        /* Sidebar */
         .sidebar {
             width: 240px;
             background: linear-gradient(180deg, #0f2027, #203a43, #2c5364);
             color: white;
             padding: 25px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
         }
 
         .sidebar a {
@@ -31,34 +37,113 @@
             text-decoration: none;
             padding: 12px;
             border-radius: 8px;
+            margin-bottom: 8px;
+            transition: 0.3s;
         }
 
         .sidebar a:hover {
             background: rgba(255, 255, 255, 0.15);
         }
 
+        /* Main */
         .main {
             flex: 1;
             padding: 30px;
         }
 
+        /* Search Section */
         .section {
             background: white;
             padding: 25px;
             border-radius: 14px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
         }
 
-        input, button {
-            padding: 10px;
-            border-radius: 6px;
+        .section h3 {
+            margin-bottom: 15px;
+        }
+
+        .search-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 15px;
+        }
+
+        input {
+            padding: 12px;
+            border-radius: 8px;
             border: 1px solid #ccc;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #203a43;
         }
 
         button {
+            padding: 12px 22px;
+            border-radius: 8px;
             background: #203a43;
             color: white;
             border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #2c5364;
+        }
+
+        /* Job Cards */
+        .jobs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .job-card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            transition: 0.3s;
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .job-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .company {
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .location {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 12px;
+        }
+
+        .apply-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #203a43;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .apply-btn:hover {
+            background: #2c5364;
         }
     </style>
 </head>
@@ -73,12 +158,41 @@
 </div>
 
 <div class="main">
+
+    <!-- Search Section -->
     <div class="section">
-        <h3>Search Jobs</h3><br>
-        <input type="text" placeholder="Job title">
-        <input type="text" placeholder="Location">
-        <button>Search</button>
+        <h3>Search Jobs</h3>
+        <div class="search-box">
+            <input type="text" placeholder="Job title (e.g. Developer)">
+            <input type="text" placeholder="Location (e.g. Ahmedabad)">
+            <button>Search</button>
+        </div>
     </div>
+
+    <!-- Job Results -->
+    <div class="jobs">
+        <div class="job-card">
+            <div class="job-title">Python Developer</div>
+            <div class="company">ABC Technologies</div>
+            <div class="location">Ahmedabad</div>
+            <a href="#" class="apply-btn">Apply Now</a>
+        </div>
+
+        <div class="job-card">
+            <div class="job-title">Web Designer</div>
+            <div class="company">Creative Studio</div>
+            <div class="location">Remote</div>
+            <a href="#" class="apply-btn">Apply Now</a>
+        </div>
+
+        <div class="job-card">
+            <div class="job-title">Data Analyst</div>
+            <div class="company">TechSoft Pvt Ltd</div>
+            <div class="location">Mumbai</div>
+            <a href="#" class="apply-btn">Apply Now</a>
+        </div>
+    </div>
+
 </div>
 
 </body>

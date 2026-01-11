@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Settings</title>
+    <style>
+        body {
+            background: #0f2d36;
+            font-family: Poppins, sans-serif;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+{% include 'jobprovider_sidebar.html' %}
+
+<div class="content">
+    <div class="card">
+        <h2>Account Settings</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="email" name="email" value="{{ request.user.email }}">
+            <button>Update</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

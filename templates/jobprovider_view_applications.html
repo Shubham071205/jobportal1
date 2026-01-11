@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Applications</title>
+    <style>
+        body {
+            background: #0f2d36;
+            font-family: Poppins, sans-serif;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+        }
+
+        .item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+{% include 'jobprovider_sidebar.html' %}
+
+<div class="content">
+    <div class="card">
+        <h2>Applications</h2>
+
+        {% for app in applications %}
+            <div class="item">
+                <b>{{ app.job.title }}</b><br>
+                {{ app.user.first_name }}<br>
+                {{ app.user.email }}
+            </div>
+        {% empty %}
+            <p>No applications yet</p>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>

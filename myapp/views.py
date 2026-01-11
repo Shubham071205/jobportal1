@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+from .models import JobSeekerProfile, CompanyProfile
+
 
 def home(request):
     return render(request, 'home.html')
@@ -75,7 +77,35 @@ def jobseeker_applications(request):
 
 @login_required(login_url='login_jobseeker')
 def jobseeker_profile(request):
-    return render(request, 'jobseeker_profile.html')
+    profile, created = JobSeekerProfile.objects.get_or_create(user=request.user)
+
+    edit_mode = request.GET.get('edit') == 'true'
+
+    if request.method == "POST":
+        request.user.first_name = request.POST.get('fullname')
+        request.user.email = request.POST.get('email')
+
+        profile.phone = request.POST.get('phone')
+        profile.location = request.POST.get('location')
+        profile.about_me = request.POST.get('about_me')
+        profile.skills = request.POST.get('skills')
+
+        request.user.save()
+        profile.save()
+
+        messages.success(request, "Profile updated successfully")
+        return redirect('jobseeker_profile')
+
+    skills_list = []
+    if profile.skills:
+        skills_list = [s.strip() for s in profile.skills.split(',') if s.strip()]
+
+    return render(request, 'jobseeker_profile.html', {
+        'profile': profile,
+        'skills_list': skills_list,
+        'edit_mode': edit_mode
+    })
+
 
 # ================= JOB PROVIDER =================
 
@@ -116,19 +146,18 @@ def login_jobprovider(request):
 
         user = authenticate(request, username=email, password=password)
 
-        if user is not None and user.is_staff:
+        if user and user.is_staff:
             login(request, user)
             messages.success(request, "Login successful!")
             return redirect('jobprovider_dashboard')
-        else:
-            messages.error(request, "Invalid Job Provider credentials")
+
+        messages.error(request, "Invalid Job Provider credentials")
 
     return render(request, 'login_jobprovider.html')
 
 
 @login_required(login_url='login_jobprovider')
 def jobprovider_dashboard(request):
-    # Create dummy jobs for testing
     dummy_jobs = [
         {'title': 'Senior Python Developer', 'applicants': 12},
         {'title': 'Frontend React Developer', 'applicants': 8},
@@ -136,12 +165,59 @@ def jobprovider_dashboard(request):
         {'title': 'Data Analyst', 'applicants': 15},
     ]
 
-    context = {
-        'jobs': dummy_jobs,
-    }
+    return render(request, 'jobprovider_dashboard.html', {
+        'jobs': dummy_jobs
+    })
 
-    return render(request, 'jobprovider_dashboard.html', context)
 
+@login_required(login_url='login_jobprovider')
+def jobprovider_post_job(request):
+    return render(request, 'jobprovider_post_job.html')
+
+
+@login_required(login_url='login_jobprovider')
+def jobprovider_view_applications(request):
+    return render(request, 'jobprovider_view_applications.html')
+
+
+@login_required(login_url='login_jobprovider')
+def jobprovider_company_profile(request):
+    company, created = CompanyProfile.objects.get_or_create(
+        user=request.user
+    )
+
+    edit_mode = request.GET.get('edit') == 'true'
+
+    if request.method == 'POST':
+        # ✅ Company name stored in USER
+        request.user.first_name = request.POST.get('company_name')
+        request.user.email = request.POST.get('email')
+        request.user.save()
+
+        # ✅ Company details stored in CompanyProfile
+        company.about_company = request.POST.get('about_company')
+        company.industry = request.POST.get('industry')
+        company.company_size = request.POST.get('company_size')
+        company.website = request.POST.get('website')
+        company.location = request.POST.get('location')
+
+        company.save()
+
+        messages.success(request, "Company profile updated successfully")
+        return redirect('jobprovider_company_profile')
+
+    return render(request, 'jobprovider_company_profile.html', {
+        'company': company,
+        'edit_mode': edit_mode
+    })
+
+
+@login_required(login_url='login_jobprovider')
+def jobprovider_settings(request):
+    return render(request, 'jobprovider_settings.html')
+
+
+# ================= LOGOUT =================
 
 def logout_view(request):
     logout(request)
@@ -149,49 +225,31 @@ def logout_view(request):
     return redirect('home')
 
 
-# ================= SIMPLE ADMIN SYSTEM =================
+# ================= SIMPLE ADMIN =================
 
 def admin_login(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        # Simple hardcoded check
-        if username == 'admin' and password == 'admin123':
-            # Store admin status in session
+        if request.POST.get('username') == 'admin' and request.POST.get('password') == 'admin123':
             request.session['admin_logged_in'] = True
             request.session['admin_username'] = 'admin'
-            messages.success(request, "Admin login successful!")
             return redirect('admin_dashboard')
-        else:
-            messages.error(request, "Invalid admin credentials")
+
+        messages.error(request, "Invalid admin credentials")
 
     return render(request, 'admin_login.html')
 
 
 def admin_dashboard(request):
-    # Check if admin is logged in via session
     if not request.session.get('admin_logged_in'):
-        messages.error(request, "Please login first")
         return redirect('admin_login')
 
-    # Get data for dashboard
-    total_users = User.objects.count()
-    total_job_seekers = User.objects.filter(is_staff=False).count()
-    total_job_providers = User.objects.filter(is_staff=True).count()
-
-    context = {
-        'admin_username': request.session.get('admin_username', 'Admin'),
-        'total_users': total_users,
-        'total_job_seekers': total_job_seekers,
-        'total_job_providers': total_job_providers,
-    }
-
-    return render(request, 'admin_dashboard.html', context)
+    return render(request, 'admin_dashboard.html', {
+        'total_users': User.objects.count(),
+        'total_job_seekers': User.objects.filter(is_staff=False).count(),
+        'total_job_providers': User.objects.filter(is_staff=True).count(),
+    })
 
 
 def admin_logout(request):
-    # Clear admin session
     request.session.flush()
-    messages.success(request, "Admin logged out successfully!")
     return redirect('admin_login')

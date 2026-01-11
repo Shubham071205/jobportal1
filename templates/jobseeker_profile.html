@@ -1,21 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>My Profile</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
         body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
             background: #f4f7fb;
             display: flex;
-            min-height: 100vh;
         }
 
         .sidebar {
@@ -28,9 +21,10 @@
         .sidebar a {
             display: block;
             color: white;
-            text-decoration: none;
             padding: 12px;
+            text-decoration: none;
             border-radius: 8px;
+            margin-bottom: 6px;
         }
 
         .sidebar a:hover {
@@ -42,17 +36,63 @@
             padding: 30px;
         }
 
-        .section {
+        .card {
             background: white;
-            padding: 25px;
-            border-radius: 14px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         }
 
-        input {
+        h2 {
+            color: #203a43;
+        }
+
+        .label {
+            font-weight: 600;
+            margin-top: 15px;
+            color: #555;
+        }
+
+        .value {
+            margin-top: 5px;
+            color: #333;
+        }
+
+        .skills span {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #0d47a1;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin: 5px 5px 0 0;
+            font-size: 13px;
+        }
+
+        input, textarea {
             width: 100%;
             padding: 10px;
-            margin-bottom: 12px;
+            margin-top: 6px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 22px;
+            background: #203a43;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2c5364;
+        }
+
+        .edit-btn {
+            float: right;
+            background: #0d6efd;
         }
     </style>
 </head>
@@ -60,19 +100,66 @@
 
 <div class="sidebar">
     <h2>Job Seeker</h2>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="jobseeker_search.html">Search Jobs</a>
-    <a href="jobseeker_applications.html">My Applications</a>
-    <a href="jobseeker_profile.html">My Profile</a>
+    <a href="{% url 'jobseeker_dashboard' %}">Dashboard</a>
+    <a href="{% url 'jobseeker_search' %}">Search Jobs</a>
+    <a href="{% url 'jobseeker_applications' %}">My Applications</a>
+    <a href="{% url 'jobseeker_profile' %}">My Profile</a>
 </div>
 
 <div class="main">
-    <div class="section">
-        <h3>My Profile</h3>
-        <input type="text" placeholder="Full Name">
-        <input type="email" placeholder="Email">
-        <input type="text" placeholder="Skills">
-        <button>Update Profile</button>
+    <div class="card">
+
+        {% if not edit_mode %}
+            <!-- VIEW MODE -->
+
+            <a href="?edit=true">
+                <button class="edit-btn">Edit Profile</button>
+            </a>
+
+            <h2>{{ request.user.first_name }}</h2>
+            <p>{{ request.user.email }}</p>
+
+            <div class="label">About Me</div>
+            <div class="value">{{ profile.about_me|default:"Not added yet" }}</div>
+
+            <div class="label">Skills</div>
+            <div class="skills">
+                {% if skills_list %}
+                    {% for skill in skills_list %}
+                        <span>{{ skill }}</span>
+                    {% endfor %}
+                {% else %}
+                    <div class="value">No skills added</div>
+                {% endif %}
+            </div>
+
+
+            <div class="label">Phone</div>
+            <div class="value">{{ profile.phone|default:"Not added" }}</div>
+
+            <div class="label">Location</div>
+            <div class="value">{{ profile.location|default:"Not added" }}</div>
+
+        {% else %}
+            <!-- EDIT MODE -->
+
+            <h2>Edit Profile</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <input type="text" name="fullname" value="{{ request.user.first_name }}" required>
+                <input type="email" name="email" value="{{ request.user.email }}" required>
+                <input type="text" name="phone" value="{{ profile.phone }}">
+                <input type="text" name="location" value="{{ profile.location }}">
+                <textarea name="about_me" rows="4">{{ profile.about_me }}</textarea>
+                <input type="text" name="skills" value="{{ profile.skills }}">
+
+                <button type="submit">Save Profile</button>
+            </form>
+
+        {% endif %}
+
     </div>
 </div>
 

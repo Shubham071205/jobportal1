@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- jobprovider_sidebar.html -->
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .sidebar {
+        width: 240px;
+        height: 100vh;
+        background: linear-gradient(180deg, #0f2027, #203a43, #2c5364);
+        color: white;
+        padding: 25px 20px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar h2 {
+        margin-bottom: 30px;
+        font-size: 22px;
+        letter-spacing: 1px;
+    }
+
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: white;
+        padding: 12px 15px;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar a:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateX(5px);
+    }
+
+    .sidebar a.active {
+        background: rgba(255, 255, 255, 0.25);
+        font-weight: 600;
+    }
+
+    .sidebar .footer {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        font-size: 13px;
+        opacity: 0.7;
+        text-align: center;
+    }
+</style>
+
+<div class="sidebar">
+    <h2>Job Portal</h2>
+
+    <a href="{% url 'jobprovider_dashboard' %}">
+        📊 Dashboard
+    </a>
+
+    <a href="{% url 'jobprovider_post_job' %}">
+        📝 Post New Job
+    </a>
+
+    <a href="{% url 'jobprovider_view_applications' %}">
+        👥 View Applicants
+    </a>
+
+    <a href="{% url 'jobprovider_company_profile' %}">🏢 Company Profile</a>
+
+
+    <a href="{% url 'jobprovider_settings' %}">
+        ⚙️ Settings
+    </a>
+
+    <a href="{% url 'logout' %}">
+        🚪 Logout
+    </a>
+
+    <div class="footer">
+        © Job Portal
+    </div>
+</div>
+
+</body>
+</html>
