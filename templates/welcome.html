@@ -1,0 +1,89 @@
+<!-- templates/welcome.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome | JobPortal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+
+        .welcome-box {
+            text-align: center;
+            animation: fadeSlide 1.5s ease;
+        }
+
+        h1 {
+            font-size: 2.6rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            margin: 30px auto 0;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Animations */
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <script>
+        setTimeout(function () {
+            window.location.href = "{% url 'home' %}";
+        }, 5000);
+    </script>
+
+</head>
+
+<body>
+<div class="welcome-box">
+    <h1>Welcome to JobPortal 🚀</h1>
+    <p>Your career journey starts here</p>
+    <div class="loader"></div>
+</div>
+</body>
+</html>

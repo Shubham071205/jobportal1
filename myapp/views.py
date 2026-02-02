@@ -250,6 +250,8 @@ def admin_dashboard(request):
     })
 
 
+def welcome(request):
+    return render(request, 'welcome.html')
 def admin_logout(request):
     request.session.flush()
     return redirect('admin_login')

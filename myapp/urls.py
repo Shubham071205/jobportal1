@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.welcome, name='welcome'),
+    path('home/', views.home, name='home'),
 
     # ================= JOB SEEKER =================
     path('signup-jobseeker/', views.signup_jobseeker, name='signup_jobseeker'),
@@ -14,7 +15,7 @@ urlpatterns = [
     path('jobseeker_applications/', views.jobseeker_applications, name='jobseeker_applications'),
     path('jobseeker_profile/', views.jobseeker_profile, name='jobseeker_profile'),
 
-    # ================= JOB PROVIDER =================
+    # =================IDER =================
     path('signup-jobprovider/', views.signup_jobprovider, name='signup_jobprovider'),
     path('login-jobprovider/', views.login_jobprovider, name='login_jobprovider'),
     path('jobprovider-dashboard/', views.jobprovider_dashboard, name='jobprovider_dashboard'),

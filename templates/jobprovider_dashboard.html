@@ -367,7 +367,7 @@
         <div class="nav-links">
             <span style="color: #ffcc00; margin-right: 15px;">👋 {{ request.user.first_name|default:request.user.username }}</span>
             <a href="/jobprovider/dashboard/">Dashboard</a>
-            <a href="#">Profile</a>
+            <a href="">Profile</a>
             <a href="/logout/" class="logout">Logout</a>
         </div>
     </div>
@@ -435,7 +435,7 @@
         <div class="job-list">
             <div class="section-header">
                 <h2>Your Posted Jobs</h2>
-                <a href="#" class="post-btn">+ Post New Job</a>
+                <a href="{% url 'jobprovider_post_job' %}" class="post-btn">+ Post New Job</a>
             </div>
 
             {% if jobs %}
@@ -449,7 +449,8 @@
                 <div class="no-jobs">
                     <p>📭 You haven't posted any jobs yet</p>
                     <p>Start hiring by posting your first job opportunity!</p>
-                    <a href="#" class="post-btn" style="margin-top: 20px;">Post Your First Job</a>
+                    <a href="{% url 'jobprovider_post_job' %}" class="post-btn">+ Post New Job</a>
+
                 </div>
             {% endif %}
         </div>
