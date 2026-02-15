@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>View Applications</title>
+
     <style>
         body {
             background: #0f2d36;
@@ -17,11 +18,64 @@
             background: white;
             padding: 25px;
             border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
         }
 
         .item {
             padding: 15px;
             border-bottom: 1px solid #eee;
+            animation: fadeIn .4s ease;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .status {
+            font-size: 13px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: white;
+        }
+
+        .applied {
+            background: gray;
+        }
+
+        .shortlisted {
+            background: green;
+        }
+
+        .rejected {
+            background: red;
+        }
+
+        .actions button {
+            padding: 6px 12px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .approve {
+            background: #28a745;
+        }
+
+        .reject {
+            background: #dc3545;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
@@ -32,19 +86,64 @@
 
 <div class="content">
     <div class="card">
-        <h2>Applications</h2>
+
+        <h2>Applications Received</h2>
 
         {% for app in applications %}
             <div class="item">
+
                 <b>{{ app.job.title }}</b><br>
-                {{ app.user.first_name }}<br>
-                {{ app.user.email }}
+
+                Applicant: <b>{{ app.seeker.first_name }}</b><br>
+                Email: {{ app.seeker.email }}<br>
+
+                Status:
+                <span class="status
+                {% if app.status == 'Applied' %}applied{% endif %}
+                {% if app.status == 'Shortlisted' %}shortlisted{% endif %}
+                {% if app.status == 'Rejected' %}rejected{% endif %}
+            ">
+                {{ app.status }}
+            </span>
+
+                <br><br>
+
+                <div class="actions">
+
+                    <form method="POST" action="{% url 'update_application_status' app.id %}">
+                        {% csrf_token %}
+
+                        <button name="status" value="Shortlisted" class="approve">
+                            Approve
+                        </button>
+
+                        <button name="status" value="Rejected" class="reject">
+                            Reject
+                        </button>
+                    </form>
+
+                </div>
+
             </div>
+
         {% empty %}
-            <p>No applications yet</p>
+            <p>No applications yet.</p>
         {% endfor %}
+
     </div>
 </div>
+<h2>Applicants for Your Jobs</h2>
+
+{% for app in applications %}
+    <div class="job">
+        <strong>{{ app.job.title }}</strong><br>
+        Applicant: {{ app.seeker.username }}<br>
+        Status: {{ app.status }}
+    </div>
+{% empty %}
+    <p>No applicants yet.</p>
+{% endfor %}
+
 
 </body>
 </html>

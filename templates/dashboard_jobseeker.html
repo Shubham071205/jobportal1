@@ -195,7 +195,23 @@
                 <strong>{{ job.title }}</strong><br>
                 <span>{{ job.company }} • {{ job.location }}</span>
             </div>
-            <button>Apply</button>
+            <
+            <div>
+
+                <a href="{% url 'job_detail' job.id %}">
+                    <button>View</button>
+                </a>
+
+                {% if job.id in applied_jobs %}
+                    <button disabled style="background:gray;">Applied</button>
+                {% else %}
+                    <a href="{% url 'apply_job' job.id %}">
+                        <button style="background:#28a745;">Apply</button>
+                    </a>
+                {% endif %}
+
+            </div>
+
         </div>
         {% empty %}
         <p>No recommendations available.</p>

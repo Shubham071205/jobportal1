@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>My Applications</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -19,16 +18,11 @@
             min-height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 240px;
             background: linear-gradient(180deg, #0f2027, #203a43, #2c5364);
             color: white;
             padding: 25px;
-        }
-
-        .sidebar h2 {
-            margin-bottom: 20px;
         }
 
         .sidebar a {
@@ -38,35 +32,22 @@
             padding: 12px;
             border-radius: 8px;
             margin-bottom: 8px;
-            transition: 0.3s;
         }
 
         .sidebar a:hover {
             background: rgba(255, 255, 255, 0.15);
         }
 
-        /* Main */
         .main {
             flex: 1;
             padding: 30px;
         }
 
-        /* Section */
         .section {
             background: white;
             padding: 25px;
             border-radius: 14px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .section h3 {
-            margin-bottom: 20px;
-        }
-
-        /* Applications */
-        .applications {
-            display: grid;
-            gap: 18px;
         }
 
         .app-card {
@@ -77,28 +58,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: 0.3s;
+            margin-bottom: 15px;
         }
 
-        .app-card:hover {
-            transform: translateY(-4px);
-        }
-
-        .app-info h4 {
-            margin-bottom: 6px;
-        }
-
-        .company {
-            color: #555;
-            margin-bottom: 4px;
-        }
-
-        .date {
-            font-size: 13px;
-            color: #888;
-        }
-
-        /* Status */
         .status {
             padding: 6px 14px;
             border-radius: 20px;
@@ -111,6 +73,14 @@
             background: #f0ad4e;
         }
 
+        .applied {
+            background: #007bff;
+        }
+
+        .shortlisted {
+            background: #28a745;
+        }
+
         .accepted {
             background: #28a745;
         }
@@ -119,7 +89,6 @@
             background: #dc3545;
         }
 
-        /* Empty State */
         .empty {
             text-align: center;
             padding: 40px;
@@ -127,14 +96,16 @@
         }
     </style>
 </head>
+
 <body>
 
 <div class="sidebar">
     <h2>Job Seeker</h2>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="jobseeker_search.html">Search Jobs</a>
-    <a href="jobseeker_applications.html">My Applications</a>
-    <a href="jobseeker_profile.html">My Profile</a>
+    <a href="{% url 'jobseeker_dashboard' %}">Dashboard</a>
+    <a href="{% url 'jobseeker_search' %}">Search Jobs</a>
+    <a href="{% url 'jobseeker_applications' %}">My Applications</a>
+    <a href="{% url 'jobseeker_profile' %}">My Profile</a>
+    <a href="{% url 'logout' %}">Logout</a>
 </div>
 
 <div class="main">
@@ -142,45 +113,32 @@
     <div class="section">
         <h3>My Applications</h3>
 
-        <!-- Applications List -->
-        <div class="applications">
+        {% if applications %}
 
-            <div class="app-card">
-                <div class="app-info">
-                    <h4>Python Developer</h4>
-                    <div class="company">ABC Technologies</div>
-                    <div class="date">Applied on: 05 Jan 2026</div>
+            {% for app in applications %}
+                <div class="app-card">
+
+                    <div>
+                        <h4>{{ app.job.title }}</h4>
+                        <div>Provider: {{ app.job.provider.first_name }}</div>
+                        <small>Applied on: {{ app.applied_at|date:"d M Y" }}</small>
+                    </div>
+
+                    <span class="status {{ app.status|lower }}">
+{{ app.status }}
+</span>
+
                 </div>
-                <span class="status pending">Pending</span>
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty">
+                <h4>No applications found</h4>
+                <p>Start applying for jobs to see them here.</p>
             </div>
 
-            <div class="app-card">
-                <div class="app-info">
-                    <h4>Web Designer</h4>
-                    <div class="company">Creative Studio</div>
-                    <div class="date">Applied on: 02 Jan 2026</div>
-                </div>
-                <span class="status accepted">Accepted</span>
-            </div>
-
-            <div class="app-card">
-                <div class="app-info">
-                    <h4>Data Analyst</h4>
-                    <div class="company">TechSoft Pvt Ltd</div>
-                    <div class="date">Applied on: 28 Dec 2025</div>
-                </div>
-                <span class="status rejected">Rejected</span>
-            </div>
-
-        </div>
-
-        <!-- Empty State (Use when no data) -->
-        <!--
-        <div class="empty">
-            <h4>No applications found</h4>
-            <p>Start applying for jobs to see them here.</p>
-        </div>
-        -->
+        {% endif %}
 
     </div>
 

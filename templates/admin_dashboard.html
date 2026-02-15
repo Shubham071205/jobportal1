@@ -121,8 +121,23 @@
     <!-- Navbar -->
     <div class="navbar">
         <h1>Admin Dashboard</h1>
-        <a href="{% url 'admin_logout' %}" class="logout-btn">Logout</a>
+
+        <div style="display:flex; gap:10px;">
+
+            <!-- Report Button -->
+            <a href="{% url 'admin_generate_report' %}"
+               style="background:#28a745;color:white;padding:8px 15px;border-radius:5px;text-decoration:none;">
+                📥 Report
+            </a>
+
+            <!-- Logout Button -->
+            <a href="{% url 'admin_logout' %}" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
     </div>
+
 
     <div class="container">
         <!-- Welcome Message -->

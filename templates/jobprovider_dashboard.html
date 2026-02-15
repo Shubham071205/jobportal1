@@ -441,7 +441,12 @@
             {% if jobs %}
                 {% for job in jobs %}
                 <div class="job-row">
-                    <div class="job-title">{{ job.title }}</div>
+                    <div class="job-title">
+                        <a href="{% url 'job_detail' job.id %}">
+                            {{ job.title }}
+                        </a>
+                    </div>
+
                     <div class="job-applicants">{{ job.applicants }} applicant{{ job.applicants|pluralize }}</div>
                 </div>
                 {% endfor %}
@@ -456,6 +461,7 @@
         </div>
 
     </div>
+
 
     <!-- JavaScript -->
     <script>

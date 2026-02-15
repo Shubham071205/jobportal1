@@ -32,5 +32,29 @@ urlpatterns = [
     path('jobprovider/applications/', views.jobprovider_view_applications, name='jobprovider_view_applications'),
     path('company-profile/', views.jobprovider_company_profile, name='jobprovider_company_profile'),
     path('jobprovider/settings/', views.jobprovider_settings, name='jobprovider_settings'),
+    path(
+        "admin-report/",
+        views.admin_generate_report,
+        name="admin_generate_report"
+    ),
+
+    path(
+        "job/<int:job_id>/",
+        views.job_detail,
+        name="job_detail"
+    ),
+
+    path(
+        "apply/<int:job_id>/",
+        views.apply_job,
+        name="apply_job"
+    ),
+    path('apply/<int:job_id>/', views.apply_job, name='apply_job'),
+    path(
+        "update-application/<int:app_id>/",
+        views.update_application_status,
+        name="update_application_status"
+    ),
 
 ]
+
