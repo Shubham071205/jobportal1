@@ -40,6 +40,16 @@ urlpatterns = [
     path('jobprovider/applications/', views.jobprovider_view_applications, name='jobprovider_view_applications'),
     path('company-profile/', views.jobprovider_company_profile, name='jobprovider_company_profile'),
     path('jobprovider/settings/', views.jobprovider_settings, name='jobprovider_settings'),
+    # ================= JOB PROVIDER =================
+    path('signup-jobprovider/', views.signup_jobprovider, name='signup_jobprovider'),
+    path('login-jobprovider/', views.login_jobprovider, name='login_jobprovider'),
+
+    path(
+        'dashboard_jobprovider/',
+        views.jobprovider_dashboard,
+        name='jobprovider_dashboard'
+    ),
+
     path(
         "admin-report/",
         views.admin_generate_report,
@@ -57,7 +67,7 @@ urlpatterns = [
         views.apply_job,
         name="apply_job"
     ),
-    path('apply/<int:job_id>/', views.apply_job, name='apply_job'),
+
     path(
         "update-application/<int:app_id>/",
         views.update_application_status,
