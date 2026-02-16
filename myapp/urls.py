@@ -8,7 +8,11 @@ urlpatterns = [
     # ================= JOB SEEKER =================
     path('signup-jobseeker/', views.signup_jobseeker, name='signup_jobseeker'),
     path('login-jobseeker/', views.login_jobseeker, name='login_jobseeker'),
-    path('jobseeker/dashboard/', views.jobseeker_dashboard, name='jobseeker_dashboard'),
+    path(
+        'dashboard_jobseeker/',
+        views.dashboard_jobseeker,
+        name='jobseeker_dashborad'
+    ),
 
     # ✅ ADD THESE
     path('jobseeker_search/', views.jobseeker_search, name='jobseeker_search'),
@@ -18,7 +22,11 @@ urlpatterns = [
     # =================IDER =================
     path('signup-jobprovider/', views.signup_jobprovider, name='signup_jobprovider'),
     path('login-jobprovider/', views.login_jobprovider, name='login_jobprovider'),
-    path('jobprovider-dashboard/', views.jobprovider_dashboard, name='jobprovider_dashboard'),
+    path(
+        'dashboard_jobseeker/',
+        views.dashboard_jobseeker,
+        name='dashboard_jobseeker'
+    ),
 
     # ================= LOGOUT =================
     path('logout/', views.logout_view, name='logout'),

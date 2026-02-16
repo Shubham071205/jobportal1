@@ -2,119 +2,230 @@
 <html>
 <head>
     <title>My Profile</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
-        body {
+
+        /* ===== GLOBAL ===== */
+
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
-            background: #f4f7fb;
-            display: flex;
         }
 
+        body {
+            background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            animation: bgMove 12s infinite alternate ease-in-out;
+        }
+
+        @keyframes bgMove {
+            from {
+                filter: hue-rotate(0deg);
+            }
+            to {
+                filter: hue-rotate(20deg);
+            }
+        }
+
+        /* ===== SIDEBAR ===== */
+
         .sidebar {
-            width: 240px;
-            background: linear-gradient(180deg, #0f2027, #203a43, #2c5364);
-            color: white;
+            width: 250px;
             padding: 25px;
+            color: white;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.25);
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            animation: slideIn 0.8s ease;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 25px;
+            text-align: center;
         }
 
         .sidebar a {
             display: block;
-            color: white;
             padding: 12px;
+            margin-bottom: 8px;
+            color: white;
             text-decoration: none;
             border-radius: 8px;
-            margin-bottom: 6px;
+            transition: .3s;
         }
 
         .sidebar a:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
         }
+
+        /* ===== MAIN ===== */
 
         .main {
             flex: 1;
-            padding: 30px;
+            padding: 40px;
+            animation: fadeIn 1s ease;
         }
+
+        /* ===== GLASS CARD ===== */
 
         .card {
-            background: white;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
             padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            color: white;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            animation: float 3s infinite ease-in-out;
         }
 
-        h2 {
-            color: #203a43;
+        .card h2 {
+            margin-bottom: 5px;
         }
 
         .label {
-            font-weight: 600;
-            margin-top: 15px;
-            color: #555;
+            margin-top: 18px;
+            font-weight: 500;
+            opacity: .85;
         }
 
         .value {
             margin-top: 5px;
-            color: #333;
+            opacity: .95;
         }
+
+        /* ===== SKILLS ===== */
 
         .skills span {
             display: inline-block;
-            background: #e3f2fd;
-            color: #0d47a1;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
             padding: 6px 12px;
+            margin: 6px 6px 0 0;
             border-radius: 20px;
-            margin: 5px 5px 0 0;
             font-size: 13px;
+            animation: pop .4s ease;
         }
+
+        /* ===== FORM ===== */
 
         input, textarea {
             width: 100%;
-            padding: 10px;
-            margin-top: 6px;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
             border-radius: 8px;
-            border: 1px solid #ccc;
+            outline: none;
         }
+
+        textarea {
+            resize: none;
+        }
+
+        /* ===== BUTTONS ===== */
 
         button {
             margin-top: 20px;
-            padding: 12px 22px;
-            background: #203a43;
-            color: white;
+            padding: 12px 24px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
+            font-weight: 500;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            color: white;
+            transition: .3s;
         }
 
         button:hover {
-            background: #2c5364;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .edit-btn {
             float: right;
-            background: #0d6efd;
         }
+
+        /* ===== ANIMATIONS ===== */
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        /* ===== MOBILE ===== */
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            body {
+                flex-direction: column;
+            }
+        }
+
     </style>
 </head>
+
 <body>
+
+<!-- SIDEBAR -->
 
 <div class="sidebar">
     <h2>Job Seeker</h2>
-    <a href="{% url 'jobseeker_dashboard' %}">Dashboard</a>
+
+    <a href="{% url 'dashboard_jobseeker' %}">Dashboard</a>
     <a href="{% url 'jobseeker_search' %}">Search Jobs</a>
     <a href="{% url 'jobseeker_applications' %}">My Applications</a>
     <a href="{% url 'jobseeker_profile' %}">My Profile</a>
+    <a href="{% url 'logout' %}">Logout</a>
 </div>
+
+<!-- MAIN -->
 
 <div class="main">
     <div class="card">
 
         {% if not edit_mode %}
-            <!-- VIEW MODE -->
 
             <a href="{% url 'jobseeker_profile' %}?edit=true">
-
-            <button class="edit-btn">Edit Profile</button>
+                <button class="edit-btn">Edit Profile</button>
             </a>
 
             <h2>{{ request.user.first_name }}</h2>
@@ -134,7 +245,6 @@
                 {% endif %}
             </div>
 
-
             <div class="label">Phone</div>
             <div class="value">{{ profile.phone|default:"Not added" }}</div>
 
@@ -142,7 +252,6 @@
             <div class="value">{{ profile.location|default:"Not added" }}</div>
 
         {% else %}
-            <!-- EDIT MODE -->
 
             <h2>Edit Profile</h2>
 
@@ -151,31 +260,29 @@
 
                 <input type="text" name="fullname"
                        value="{{ request.user.first_name }}"
-                       placeholder="Enter your full name"
-                       required>
+                       placeholder="Full name" required>
 
                 <input type="email" name="email"
                        value="{{ request.user.email }}"
-                       placeholder="Enter your email address"
-                       required>
+                       placeholder="Email" required>
 
                 <input type="text" name="phone"
                        value="{{ profile.phone }}"
-                       placeholder="Enter your phone number">
+                       placeholder="Phone">
 
                 <input type="text" name="location"
                        value="{{ profile.location }}"
-                       placeholder="Enter your city/location">
+                       placeholder="Location">
 
                 <textarea name="about_me" rows="4"
-                          placeholder="Write a short bio about yourself...">{{ profile.about_me }}</textarea>
+                          placeholder="About you...">{{ profile.about_me }}</textarea>
 
                 <input type="text" name="skills"
                        value="{{ profile.skills }}"
-                       placeholder="Enter skills (example: Python, Django, HTML)">
-
+                       placeholder="Skills (comma separated)">
 
                 <button type="submit">Save Profile</button>
+
             </form>
 
         {% endif %}

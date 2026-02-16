@@ -62,26 +62,53 @@ def login_jobseeker(request):
 
         if user and not user.is_staff:
             login(request, user)
-            return redirect("jobseeker_dashboard")
+            return redirect("dashboard_jobseeker")
 
         messages.error(request, "Invalid credentials")
 
     return render(request, "login_jobseeker.html")
 
 
-@login_required(login_url="login_jobseeker")
-def jobseeker_dashboard(request):
-    jobs = Job.objects.all().order_by("-created_at")
+from django.utils.timezone import now
+from django.db.models import Count
 
-    applied_jobs = Application.objects.filter(
-        seeker=request.user
-    ).values_list("job_id", flat=True)
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Job, Application
+
+
+@login_required(login_url='login_jobseeker')
+def dashboard_jobseeker(request):
+    # All jobs posted by providers
+    recommended_jobs = Job.objects.all().order_by('-created_at')[:10]
+
+    # Applications of current user
+    applications = Application.objects.filter(seeker=request.user)
+
+    # IDs of applied jobs (for button state)
+    applied_jobs = applications.values_list('job_id', flat=True)
+
+    # counts
+    total_applications = applications.count()
+    shortlisted_count = applications.filter(status="Accepted").count()
+
+    # recent jobs (last 7 days)
+    from django.utils import timezone
+    from datetime import timedelta
+
+    week_ago = timezone.now() - timedelta(days=7)
+    new_jobs_count = Job.objects.filter(created_at__gte=week_ago).count()
+
+    # recent applications
+    recent_applications = applications.order_by('-applied_at')[:5]
 
     context = {
-        "recommended_jobs": jobs[:6],
+        "recommended_jobs": recommended_jobs,
         "applied_jobs": applied_jobs,
-        "new_jobs_count": jobs.count(),
-        "total_applications": len(applied_jobs),
+        "recent_applications": recent_applications,
+        "total_applications": total_applications,
+        "shortlisted_count": shortlisted_count,
+        "new_jobs_count": new_jobs_count,
     }
 
     return render(request, "dashboard_jobseeker.html", context)
