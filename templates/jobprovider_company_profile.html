@@ -165,8 +165,9 @@
 
         {% if not edit_mode %}
 
-            <a href="?edit=true">
-                <button class="edit-btn">Edit Profile</button>
+            <a href="{% url 'jobprovider_company_profile' %}?edit=true">
+
+            <button class="edit-btn">Edit Profile</button>
             </a>
 
             <h2>{{ request.user.first_name }}</h2>

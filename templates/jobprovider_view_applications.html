@@ -24,11 +24,6 @@
         .item {
             padding: 15px;
             border-bottom: 1px solid #eee;
-            animation: fadeIn .4s ease;
-        }
-
-        .item:last-child {
-            border-bottom: none;
         }
 
         .status {
@@ -38,11 +33,11 @@
             color: white;
         }
 
-        .applied {
+        .pending {
             background: gray;
         }
 
-        .shortlisted {
+        .accepted {
             background: green;
         }
 
@@ -67,16 +62,6 @@
             background: #dc3545;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
     </style>
 </head>
 
@@ -95,16 +80,12 @@
                 <b>{{ app.job.title }}</b><br>
 
                 Applicant: <b>{{ app.seeker.first_name }}</b><br>
-                Email: {{ app.seeker.email }}<br>
+                Email: {{ app.seeker.email }}<br><br>
 
                 Status:
-                <span class="status
-                {% if app.status == 'Applied' %}applied{% endif %}
-                {% if app.status == 'Shortlisted' %}shortlisted{% endif %}
-                {% if app.status == 'Rejected' %}rejected{% endif %}
-            ">
-                {{ app.status }}
-            </span>
+                <span class="status {{ app.status|lower }}">
+    {{ app.status }}
+</span>
 
                 <br><br>
 
@@ -113,13 +94,14 @@
                     <form method="POST" action="{% url 'update_application_status' app.id %}">
                         {% csrf_token %}
 
-                        <button name="status" value="Shortlisted" class="approve">
+                        <button name="status" value="Accepted" class="approve">
                             Approve
                         </button>
 
                         <button name="status" value="Rejected" class="reject">
                             Reject
                         </button>
+
                     </form>
 
                 </div>
@@ -132,18 +114,6 @@
 
     </div>
 </div>
-<h2>Applicants for Your Jobs</h2>
-
-{% for app in applications %}
-    <div class="job">
-        <strong>{{ app.job.title }}</strong><br>
-        Applicant: {{ app.seeker.username }}<br>
-        Status: {{ app.status }}
-    </div>
-{% empty %}
-    <p>No applicants yet.</p>
-{% endfor %}
-
 
 </body>
 </html>

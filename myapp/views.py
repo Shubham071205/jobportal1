@@ -116,39 +116,55 @@ def apply_job(request, job_id):
     return redirect("jobseeker_applications")
 
 
-@login_required(login_url="login_jobseeker")
+@login_required(login_url='login_jobseeker')
 def jobseeker_applications(request):
-    applications = Application.objects.filter(
-        seeker=request.user
-    ).select_related("job")
+    apps = Application.objects.filter(seeker=request.user)
 
-    return render(request, "jobseeker_applications.html", {
-        "applications": applications
-    })
+    return render(
+        request,
+        "jobseeker_applications.html",
+        {"applications": apps}
+    )
 
 
-@login_required(login_url="login_jobseeker")
+@login_required(login_url='login_jobseeker')
 def jobseeker_profile(request):
-    profile, _ = JobSeekerProfile.objects.get_or_create(user=request.user)
+    profile, created = JobSeekerProfile.objects.get_or_create(
+        user=request.user
+    )
+
+    # ✅ Detect edit mode
+    edit_mode = request.GET.get("edit") == "true"
 
     if request.method == "POST":
+
         request.user.first_name = request.POST.get("fullname")
         request.user.email = request.POST.get("email")
+        request.user.save()
 
         profile.phone = request.POST.get("phone")
         profile.location = request.POST.get("location")
         profile.skills = request.POST.get("skills")
         profile.about_me = request.POST.get("about_me")
 
-        request.user.save()
         profile.save()
 
-        messages.success(request, "Profile updated")
+        messages.success(request, "Profile updated!")
+
+        # ✅ Return to normal view
         return redirect("jobseeker_profile")
 
+    # split skills for display
+    skills_list = []
+    if profile.skills:
+        skills_list = [s.strip() for s in profile.skills.split(",")]
+
     return render(request, "jobseeker_profile.html", {
-        "profile": profile
+        "profile": profile,
+        "skills_list": skills_list,
+        "edit_mode": edit_mode
     })
+
 
 
 @login_required(login_url="login_jobseeker")
@@ -232,38 +248,50 @@ def jobprovider_post_job(request):
     return render(request, "jobprovider_post_job.html")
 
 
-@login_required(login_url="login_jobprovider")
+@login_required(login_url='login_jobprovider')
 def jobprovider_view_applications(request):
+
     applications = Application.objects.filter(
         job__provider=request.user
-    ).select_related("job", "seeker")
+    )
 
-    return render(request, "jobprovider_view_applications.html", {
-        "applications": applications
-    })
+    return render(
+        request,
+        "jobprovider_view_applications.html",
+        {"applications": applications}
+    )
+
 
 
 @require_POST
-@login_required(login_url="login_jobprovider")
+@login_required(login_url='login_jobprovider')
 def update_application_status(request, app_id):
+
     application = get_object_or_404(
         Application,
         id=app_id,
         job__provider=request.user
     )
 
-    status = request.POST.get("status")
+    if request.method == "POST":
 
-    if status in ["Accepted", "Rejected"]:
-        application.status = status
-        application.save()
+        status = request.POST.get("status")
+
+        if status in ["Accepted", "Rejected"]:
+            application.status = status
+            application.save()
 
     return redirect("jobprovider_view_applications")
 
 
-@login_required(login_url="login_jobprovider")
+@login_required(login_url='login_jobprovider')
 def jobprovider_company_profile(request):
-    company, _ = CompanyProfile.objects.get_or_create(user=request.user)
+    company, created = CompanyProfile.objects.get_or_create(
+        user=request.user
+    )
+
+    # ✅ Detect edit mode from URL
+    edit_mode = request.GET.get("edit") == "true"
 
     if request.method == "POST":
         request.user.first_name = request.POST.get("company_name")
@@ -278,11 +306,14 @@ def jobprovider_company_profile(request):
 
         company.save()
 
-        messages.success(request, "Profile updated")
+        messages.success(request, "Profile updated!")
+
+        # ✅ Redirect back to normal view
         return redirect("jobprovider_company_profile")
 
     return render(request, "jobprovider_company_profile.html", {
-        "company": company
+        "company": company,
+        "edit_mode": edit_mode
     })
 
 

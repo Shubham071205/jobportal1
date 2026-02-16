@@ -112,8 +112,9 @@
         {% if not edit_mode %}
             <!-- VIEW MODE -->
 
-            <a href="?edit=true">
-                <button class="edit-btn">Edit Profile</button>
+            <a href="{% url 'jobseeker_profile' %}?edit=true">
+
+            <button class="edit-btn">Edit Profile</button>
             </a>
 
             <h2>{{ request.user.first_name }}</h2>
@@ -148,12 +149,31 @@
             <form method="POST">
                 {% csrf_token %}
 
-                <input type="text" name="fullname" value="{{ request.user.first_name }}" required>
-                <input type="email" name="email" value="{{ request.user.email }}" required>
-                <input type="text" name="phone" value="{{ profile.phone }}">
-                <input type="text" name="location" value="{{ profile.location }}">
-                <textarea name="about_me" rows="4">{{ profile.about_me }}</textarea>
-                <input type="text" name="skills" value="{{ profile.skills }}">
+                <input type="text" name="fullname"
+                       value="{{ request.user.first_name }}"
+                       placeholder="Enter your full name"
+                       required>
+
+                <input type="email" name="email"
+                       value="{{ request.user.email }}"
+                       placeholder="Enter your email address"
+                       required>
+
+                <input type="text" name="phone"
+                       value="{{ profile.phone }}"
+                       placeholder="Enter your phone number">
+
+                <input type="text" name="location"
+                       value="{{ profile.location }}"
+                       placeholder="Enter your city/location">
+
+                <textarea name="about_me" rows="4"
+                          placeholder="Write a short bio about yourself...">{{ profile.about_me }}</textarea>
+
+                <input type="text" name="skills"
+                       value="{{ profile.skills }}"
+                       placeholder="Enter skills (example: Python, Django, HTML)">
+
 
                 <button type="submit">Save Profile</button>
             </form>
