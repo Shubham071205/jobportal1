@@ -74,5 +74,22 @@ urlpatterns = [
         name="update_application_status"
     ),
 
+    path("admin/users/", views.admin_view_users, name="admin_view_users"),
+    path("admin/jobs/", views.admin_manage_jobs, name="admin_manage_jobs"),
+    path("admin/jobs/delete/<int:job_id>/", views.admin_delete_job, name="admin_delete_job"),
+
+    path("reports/jobs/", views.job_report, name="job_report"),
+    path("admin-reports/", views.admin_reports_menu, name="admin_reports_menu"),
+
+    path("reports/job-seekers/", views.job_seeker_report, name="job_seeker_report"),
+    path("reports/job-providers/", views.job_provider_report, name="job_provider_report"),
+    path("reports/jobs/", views.job_report, name="job_report"),
+    path("reports/download/jobseekers/", views.download_job_seekers, name="download_job_seekers"),
+
+    path("reports/download/providers/", views.download_job_providers, name="download_job_providers"),
+
+    path("reports/download/jobs/", views.download_jobs, name="download_jobs"),
+
+
 ]
 

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jobs Report</title>
+
+    <style>
+
+        body {
+            font-family: Poppins, sans-serif;
+            background: #f4f6f9;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* ACTION BAR */
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        /* BUTTON STYLE */
+        .back,
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: .3s;
+        }
+
+        /* BACK */
+        .back {
+            background: #ff9800;
+            color: white;
+        }
+
+        .back:hover {
+            background: #e68900;
+            transform: translateY(-2px);
+        }
+
+        /* DOWNLOAD */
+        button {
+            background: #007bff;
+            color: white;
+        }
+
+        button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #ff9800;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="actions">
+    <a href="{% url 'admin_reports_menu' %}" class="back">⬅ Back</a>
+
+    <form action="{% url 'download_jobs' %}" method="get">
+        <button type="submit">⬇ Download Report</button>
+    </form>
+</div>
+
+<h1>Jobs Report</h1>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Provider</th>
+        <th>Location</th>
+        <th>Salary</th>
+        <th>Applicants</th>
+        <th>Posted Date</th>
+    </tr>
+
+    {% for job in jobs %}
+        <tr>
+            <td>{{ job.id }}</td>
+            <td>{{ job.title }}</td>
+            <td>{{ job.provider.username }}</td>
+            <td>{{ job.location }}</td>
+            <td>{{ job.salary }}</td>
+            <td>{{ job.applicants }}</td>
+            <td>{{ job.created_at }}</td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="7">No jobs found.</td>
+        </tr>
+    {% endfor %}
+
+</table>
+
+</body>
+</html>

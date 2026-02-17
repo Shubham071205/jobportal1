@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Seeker Report</title>
+
+    <style>
+        body {
+            font-family: Poppins, sans-serif;
+            background: #f4f6f9;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .back {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="actions">
+    <a href="{% url 'admin_reports_menu' %}" class="back">⬅ Back</a>
+
+    <!-- DOWNLOAD BUTTON -->
+    <form action="{% url 'download_job_seekers' %}" method="get">
+        <button type="submit">⬇ Download Report</button>
+    </form>
+</div>
+
+<h1>Job Seeker Report</h1>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Location</th>
+        <th>Skills</th>
+    </tr>
+
+    {% for s in seekers %}
+        <tr>
+            <td>{{ s.id }}</td>
+            <td>{{ s.username }}</td>
+            <td>{{ s.email }}</td>
+            <td>{{ s.seeker_profile.phone }}</td>
+            <td>{{ s.seeker_profile.location }}</td>
+            <td>{{ s.seeker_profile.skills }}</td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="6">No job seekers found.</td>
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

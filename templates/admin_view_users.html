@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Users</title>
+
+    <style>
+
+        body {
+            background: #f5f7fb;
+            font-family: Poppins, sans-serif;
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .1);
+            animation: fade .5s ease;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
+
+        .role {
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: white;
+            font-size: 12px;
+        }
+
+        .seeker {
+            background: #28a745;
+        }
+
+        .provider {
+            background: #6f42c1;
+        }
+
+        .user {
+            background: #6c757d;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>👥 All Registered Users</h2>
+
+    <table>
+
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Extra Info</th>
+            <th>Joined</th>
+        </tr>
+
+        {% for item in user_data %}
+
+            <tr>
+
+                <td>{{ item.user.username }}</td>
+                <td>{{ item.user.email }}</td>
+
+                <td>
+                    {% if item.role == "Job Seeker" %}
+                        <span class="role seeker">Seeker</span>
+                    {% elif item.role == "Job Provider" %}
+                        <span class="role provider">Provider</span>
+                    {% else %}
+                        <span class="role user">User</span>
+                    {% endif %}
+                </td>
+
+                <td>
+
+                    {% if item.seeker %}
+                        Skills: {{ item.seeker.skills }}<br>
+                        Location: {{ item.seeker.location }}
+
+                    {% elif item.provider %}
+                        Industry: {{ item.provider.industry }}<br>
+                        Location: {{ item.provider.location }}
+
+                    {% endif %}
+
+                </td>
+
+                <td>{{ item.user.date_joined|date:"d M Y" }}</td>
+
+            </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+</html>

@@ -360,15 +360,23 @@ def admin_login(request):
     return render(request, "admin_login.html")
 
 
-def admin_dashboard(request):
-    if not request.session.get("admin_logged_in"):
-        return redirect("admin_login")
 
-    return render(request, "admin_dashboard.html", {
-        "total_users": User.objects.count(),
-        "job_seekers": User.objects.filter(is_staff=False).count(),
-        "job_providers": User.objects.filter(is_staff=True).count(),
-    })
+def admin_dashboard(request):
+    total_users = User.objects.count()
+    total_job_seekers = JobSeekerProfile.objects.count()
+    total_job_providers = CompanyProfile.objects.count()
+    total_jobs = Job.objects.count()
+
+    context = {
+        "admin_username": request.user.username,
+        "total_users": total_users,
+        "total_job_seekers": total_job_seekers,
+        "total_job_providers": total_job_providers,
+        "total_jobs": total_jobs,
+    }
+
+    return render(request, "admin_dashboard.html", context)
+
 
 
 def admin_generate_report(request):
@@ -407,3 +415,180 @@ def admin_logout(request):
 @login_required(login_url='login_jobprovider')
 def jobprovider_settings(request):
     return render(request, 'jobprovider_settings.html')
+
+
+from django.contrib.auth.models import User
+from django.shortcuts import render
+from .models import JobSeekerProfile, CompanyProfile
+
+
+def admin_view_users(request):
+    users = User.objects.all().order_by("-date_joined")
+
+    user_data = []
+
+    for u in users:
+
+        role = "User"
+
+        seeker = JobSeekerProfile.objects.filter(user=u).first()
+        provider = CompanyProfile.objects.filter(user=u).first()
+
+        if seeker:
+            role = "Job Seeker"
+
+        if provider:
+            role = "Job Provider"
+
+        user_data.append({
+            "user": u,
+            "role": role,
+            "seeker": seeker,
+            "provider": provider,
+        })
+
+    return render(request, "admin_view_users.html", {
+        "user_data": user_data
+    })
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Job
+
+
+def admin_manage_jobs(request):
+    jobs = Job.objects.select_related("provider").all()
+
+    return render(request, "admin_manage_jobs.html", {
+        "jobs": jobs
+    })
+
+
+def admin_delete_job(request, job_id):
+    job = get_object_or_404(Job, id=job_id)
+    job.delete()
+
+    return redirect("admin_manage_jobs")
+
+
+from django.shortcuts import render
+
+
+def admin_reports_menu(request):
+    return render(request, "admin_reports_menu.html")
+
+
+def job_seeker_report(request):
+    seekers = User.objects.filter(seeker_profile__isnull=False)
+    return render(request, "job_seeker_report.html", {"seekers": seekers})
+
+
+def job_provider_report(request):
+    providers = User.objects.filter(company_profile__isnull=False)
+    return render(request, "job_provider_report.html", {"providers": providers})
+
+
+def job_report(request):
+    jobs = Job.objects.all()
+    return render(request, "job_report.html", {"jobs": jobs})
+
+
+def admin_reports_menu(request):
+    return render(request, "admin_reports_menu.html")
+
+
+import csv
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from .models import JobSeekerProfile
+
+
+def download_job_seekers(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="job_seekers_report.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(["ID", "Name", "Email", "Phone", "Location", "Skills"])
+
+    seekers = User.objects.filter(seeker_profile__isnull=False)
+
+    for s in seekers:
+        profile = s.seeker_profile
+        writer.writerow([
+            s.id,
+            s.username,
+            s.email,
+            profile.phone,
+            profile.location,
+            profile.skills
+        ])
+
+    return response
+
+
+from .models import CompanyProfile
+
+
+def download_job_providers(request):
+    import csv
+    from django.http import HttpResponse
+    from django.contrib.auth.models import User
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="job_providers_report.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(["ID", "Company/User", "Email", "Industry", "Location", "Website"])
+
+    providers = User.objects.filter(company_profile__isnull=False)
+
+    for p in providers:
+        profile = p.company_profile
+
+        writer.writerow([
+            p.id,
+            p.username,
+            p.email,
+            profile.industry,
+            profile.location,
+            profile.website
+        ])
+
+    return response
+
+
+from .models import Job
+
+
+def download_jobs(request):
+    import csv
+    from django.http import HttpResponse
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="jobs_report.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        "Job ID",
+        "Title",
+        "Provider",
+        "Location",
+        "Salary",
+        "Applicants",
+        "Created"
+    ])
+
+    jobs = Job.objects.all()
+
+    for job in jobs:
+        writer.writerow([
+            job.id,
+            job.title,
+            job.provider.username,
+            job.location,
+            job.salary,
+            job.applicants,
+            job.created_at
+        ])
+
+    return response

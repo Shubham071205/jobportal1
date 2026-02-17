@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Provider Report</title>
+
+    <style>
+
+        body {
+            font-family: Poppins, sans-serif;
+            background: #f4f6f9;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* ACTION BAR */
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #28a745;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .back:hover {
+            opacity: 0.7;
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, .2);
+        }
+
+        /* TABLE */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #28a745;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="actions">
+
+    <a href="{% url 'admin_reports_menu' %}" class="back">
+        ⬅ Back to Reports
+    </a>
+
+    <form action="{% url 'download_job_providers' %}" method="get">
+        <button class="download-btn" type="submit">
+            ⬇ Download Report
+        </button>
+    </form>
+
+</div>
+
+<h1>Job Provider Report</h1>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Industry</th>
+        <th>Company Size</th>
+        <th>Location</th>
+    </tr>
+
+    {% for p in providers %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.username }}</td>
+            <td>{{ p.email }}</td>
+            <td>{{ p.company_profile.industry }}</td>
+            <td>{{ p.company_profile.company_size }}</td>
+            <td>{{ p.company_profile.location }}</td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="6">No providers found.</td>
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

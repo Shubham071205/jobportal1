@@ -3,39 +3,104 @@
 <head>
     <title>Post New Job</title>
     <style>
+
         body {
-            background: #0f2d36;
-            font-family: Poppins, sans-serif;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f2d36, #1c4960);
+            overflow-x: hidden;
         }
 
+        /* PAGE ANIMATION */
         .content {
             margin-left: 240px;
-            padding: 30px;
+            padding: 40px;
+            animation: fadeSlide 0.8s ease;
         }
 
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* GLASS CARD */
         .card {
-            background: white;
-            padding: 25px;
-            border-radius: 14px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, .25);
+            transition: 0.3s ease;
         }
 
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #0f2d36;
+        }
+
+        /* INPUT STYLING */
         input, textarea {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
+            padding: 12px 14px;
+            margin: 12px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #f9fbfc;
         }
 
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #0066ff;
+            background: white;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 102, 255, .25);
+            transform: scale(1.01);
+        }
+
+        /* BUTTON */
         button {
-            background: #0066ff;
+            margin-top: 15px;
+            background: linear-gradient(45deg, #0066ff, #00c6ff);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 14px 22px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 102, 255, .4);
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
     </style>
+
+
 </head>
 
 <body>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Reports</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        /* RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* BACKGROUND */
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadePage .6s ease;
+        }
+
+        /* PAGE ANIMATION */
+        @keyframes fadePage {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CONTAINER */
+        .container {
+            width: 95%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, .15);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, .25);
+            color: white;
+            text-align: center;
+        }
+
+        /* TITLE */
+        h2 {
+            margin-bottom: 25px;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        /* MENU GRID */
+        .menu {
+            display: grid;
+            gap: 15px;
+        }
+
+        /* BUTTON STYLE */
+        .report-btn {
+            display: block;
+            padding: 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            color: white;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            transition: .3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* HOVER EFFECT */
+        .report-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .3);
+        }
+
+        /* BACK BUTTON */
+        .back-btn {
+            margin-top: 25px;
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            transition: .3s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .3);
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>📊 Admin Reports Dashboard</h2>
+
+    <div class="menu">
+
+        <a href="{% url 'job_seeker_report' %}" class="report-btn">
+            👤 Job Seekers Report
+        </a>
+
+        <a href="{% url 'job_provider_report' %}" class="report-btn">
+            🏢 Job Providers Report
+        </a>
+
+        <a href="{% url 'job_report' %}" class="report-btn">
+            💼 Jobs Report
+        </a>
+
+    </div>
+
+    <a href="{% url 'admin_dashboard' %}" class="back-btn">
+        ⬅ Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>
