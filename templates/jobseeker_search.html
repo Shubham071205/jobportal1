@@ -15,7 +15,42 @@
         }
 
         body {
+            display: flex; /* IMPORTANT */
             background: linear-gradient(120deg, #e0eafc, #cfdef3);
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 230px;
+            background: #203a43;
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            transition: .3s;
+        }
+
+        .sidebar a:hover {
+            background: #2c5364;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
             padding: 40px 20px;
         }
 
@@ -23,7 +58,6 @@
         .header {
             text-align: center;
             margin-bottom: 30px;
-            animation: fadeDown .7s ease;
         }
 
         .header h1 {
@@ -37,7 +71,6 @@
             justify-content: center;
             gap: 10px;
             margin-bottom: 30px;
-            animation: fadeUp .7s ease;
         }
 
         .search-box input {
@@ -47,12 +80,6 @@
             border: none;
             outline: none;
             box-shadow: 0 4px 10px rgba(0, 0, 0, .1);
-            transition: .3s;
-        }
-
-        .search-box input:focus {
-            transform: scale(1.03);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, .15);
         }
 
         .search-box button {
@@ -62,12 +89,10 @@
             background: #203a43;
             color: white;
             cursor: pointer;
-            transition: .3s;
         }
 
         .search-box button:hover {
             background: #2c5364;
-            transform: translateY(-2px);
         }
 
         /* JOB GRID */
@@ -84,16 +109,9 @@
             padding: 20px;
             border-radius: 14px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
-            transition: .3s;
-            animation: fadeIn .6s ease both;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .job:hover {
-            transform: translateY(-5px) scale(1.01);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, .12);
         }
 
         .job strong {
@@ -106,7 +124,6 @@
             color: #777;
         }
 
-        /* BUTTON */
         .job button {
             padding: 8px 14px;
             border: none;
@@ -114,59 +131,26 @@
             background: #203a43;
             color: white;
             cursor: pointer;
-            transition: .3s;
         }
 
         .job button:hover {
             background: #2c5364;
-            transform: scale(1.05);
-        }
-
-        /* ANIMATIONS */
-        @keyframes fadeDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-            }
         }
 
         /* MOBILE */
-        @media (max-width: 600px) {
-            .search-box {
+        @media (max-width: 768px) {
+            body {
                 flex-direction: column;
             }
 
-            .search-box input {
+            .sidebar {
                 width: 100%;
+                flex-direction: row;
+                justify-content: space-around;
             }
 
-            .job {
-                flex-direction: column;
-                gap: 10px;
-                align-items: flex-start;
+            .main {
+                padding: 20px;
             }
         }
 
@@ -175,34 +159,44 @@
 
 <body>
 
-<div class="header">
-    <h1>🔍 Search Jobs</h1>
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>Job Seeker</h2>
+    <a href="{% url 'dashboard_jobseeker' %}">Dashboard</a>
+    <a href="{% url 'jobseeker_search' %}">Search Jobs</a>
+    <a href="{% url 'jobseeker_applications' %}">My Applications</a>
+    <a href="{% url 'jobseeker_profile' %}">My Profile</a>
+    <a href="{% url 'logout' %}">Logout</a>
 </div>
 
-<form method="GET" class="search-box">
-    <input type="text" name="q" placeholder="Search job..." value="{{ query }}">
-    <button type="submit">Search</button>
-</form>
+<!-- MAIN CONTENT -->
+<div class="main">
 
-<div class="jobs">
-
-{% for job in jobs %}
-    <div class="job">
-
-        <div>
-            <strong>{{ job.title }}</strong><br>
-            <span>{{ job.provider.first_name }} • {{ job.location }}</span>
-        </div>
-
-        <a href="{% url 'job_detail' job.id %}">
-            <button>View</button>
-        </a>
-
+    <div class="header">
+        <h1>🔍 Search Jobs</h1>
     </div>
 
-{% empty %}
-    <p style="text-align:center;color:#555;">No jobs found.</p>
-{% endfor %}
+    <form method="GET" class="search-box">
+        <input type="text" name="q" placeholder="Search job..." value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="jobs">
+        {% for job in jobs %}
+            <div class="job">
+                <div>
+                    <strong>{{ job.title }}</strong><br>
+                    <span>{{ job.provider.first_name }} • {{ job.location }}</span>
+                </div>
+
+                <a href="{% url 'job_detail' job.id %}">
+                    <button>View</button>
+                </a>
+            </div>
+        {% empty %}
+            <p style="text-align:center;color:#555;">No jobs found.</p>
+        {% endfor %}
+    </div>
 
 </div>
 

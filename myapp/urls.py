@@ -22,11 +22,7 @@ urlpatterns = [
     # =================IDER =================
     path('signup-jobprovider/', views.signup_jobprovider, name='signup_jobprovider'),
     path('login-jobprovider/', views.login_jobprovider, name='login_jobprovider'),
-    path(
-        'dashboard_jobseeker/',
-        views.dashboard_jobseeker,
-        name='dashboard_jobseeker'
-    ),
+    path('jobseeker/dashboard/', views.dashboard_jobseeker, name='dashboard_jobseeker'),
 
     # ================= LOGOUT =================
     path('logout/', views.logout_view, name='logout'),
@@ -90,6 +86,7 @@ urlpatterns = [
 
     path("reports/download/jobs/", views.download_jobs, name="download_jobs"),
 
-
+    path('admin/view-users/', views.admin_view_users, name='admin_view_users'),
+    path('admin/manage-jobs/', views.admin_manage_jobs, name='admin_manage_jobs'),
 ]
 

@@ -366,8 +366,7 @@
         <h1>Job Portal</h1>
         <div class="nav-links">
             <span style="color: #ffcc00; margin-right: 15px;">👋 {{ request.user.first_name|default:request.user.username }}</span>
-            <a href="/jobprovider/dashboard/">Dashboard</a>
-            <a href="">Profile</a>
+            <a href={% url 'jobprovider_company_profile' %}>Profile</a>
             <a href="/logout/" class="logout">Logout</a>
         </div>
     </div>
@@ -379,7 +378,7 @@
         <a href="{% url 'jobprovider_post_job' %}">📝 Post New Job</a>
         <a href="{% url 'jobprovider_view_applications' %}">👥 View Applicants</a>
         <a href="{% url 'jobprovider_company_profile' %}">🏢 Company Profile</a>
-        <a href="{% url 'jobprovider_settings' %}">⚙️ Settings</a>
+
         <a href="/logout/">🚪 Logout</a>
     </div>
 
@@ -409,23 +408,7 @@
                 <h3>{{ jobs|length }}</h3>
                 <p>Posted Jobs</p>
             </div>
-            <div class="stat-card">
-                <h3>
-                    {% with total=0 %}
-                        {% for job in jobs %}
-                            {% with total=total|add:job.applicants %}
-                            {% endwith %}
-                        {% endfor %}
-                        {{ total|default:"0" }}
-                    {% endwith %}
-                </h3>
-                <p>Total Applicants</p>
-            </div>
 
-            <div class="stat-card">
-                <h3>4</h3>
-                <p>Active Positions</p>
-            </div>
         </div>
 
         <!-- Job List Section -->

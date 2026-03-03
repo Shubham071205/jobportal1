@@ -6,7 +6,8 @@ from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.http import HttpResponse
 import csv
-
+from .models import CompanyProfile
+from .models import JobSeekerProfile
 from .models import Job, JobSeekerProfile, CompanyProfile, Application
 
 
@@ -47,8 +48,11 @@ def signup_jobseeker(request):
             first_name=fullname
         )
 
+        JobSeekerProfile.objects.create(user=user)
+
+        CompanyProfile.objects.create(user=user)
         login(request, user)
-        return redirect("jobseeker_dashboard")
+        return redirect("dashboard_jobseeker")
 
     return render(request, "signup_jobseeker.html")
 
@@ -226,6 +230,7 @@ def signup_jobprovider(request):
             is_staff=True
         )
 
+        CompanyProfile.objects.create(user=user)
         login(request, user)
         return redirect("jobprovider_dashboard")
 
@@ -360,22 +365,25 @@ def admin_login(request):
     return render(request, "admin_login.html")
 
 
+from django.contrib.auth.models import User
+from .models import Job, JobSeekerProfile, CompanyProfile
 
 def admin_dashboard(request):
-    total_users = User.objects.count()
-    total_job_seekers = JobSeekerProfile.objects.count()
-    total_job_providers = CompanyProfile.objects.count()
+    if not request.session.get("admin_logged_in"):
+        return redirect("admin_login")
+
+    total_users = User.objects.filter(is_superuser=False).count()
+    total_job_seekers = User.objects.filter(is_staff=False, is_superuser=False).count()
+    total_job_providers = User.objects.filter(is_staff=True, is_superuser=False).count()
     total_jobs = Job.objects.count()
 
-    context = {
-        "admin_username": request.user.username,
+    return render(request, "admin_dashboard.html", {
+        "admin_username": "Admin",
         "total_users": total_users,
         "total_job_seekers": total_job_seekers,
         "total_job_providers": total_job_providers,
         "total_jobs": total_jobs,
-    }
-
-    return render(request, "admin_dashboard.html", context)
+    })
 
 
 
@@ -592,3 +600,21 @@ def download_jobs(request):
         ])
 
     return response
+
+
+from django.db.models import Sum
+from .models import Job
+
+
+def jobprovider_dashboard(request):
+    jobs = Job.objects.filter(provider=request.user)
+
+    # REAL total applicants calculation
+    total_applicants = jobs.aggregate(total=Sum('applicants'))['total'] or 0
+
+    context = {
+        'jobs': jobs,
+        'total_applicants': total_applicants,
+    }
+
+    return render(request, 'jobprovider_dashboard.html', context)
