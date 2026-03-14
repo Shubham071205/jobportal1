@@ -234,7 +234,7 @@ def signup_jobprovider(request):
         login(request, user)
         return redirect("jobprovider_dashboard")
 
-    return render(request, "signup_jobprovider.html")
+    return render(request, "signup_jobseeker.html")
 
 
 def login_jobprovider(request):
@@ -663,13 +663,26 @@ def jobseeker_search(request):
     return render(request, "jobseeker_search.html", context)
 
 
-from django.contrib.auth.models import User
 from django.shortcuts import redirect
+from .models import JobSeekerProfile
 
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.models import User
 
 def delete_user(request, user_id):
     if request.method == "POST":
-        user = User.objects.get(id=user_id)
+        user = get_object_or_404(User, id=user_id)
         user.delete()
+    return redirect('/reports/job-seekers/')
 
-    return redirect('job_seekers_report')
+
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.models import User
+
+
+def delete_provider(request, provider_id):
+    if request.method == "POST":
+        provider = get_object_or_404(User, id=provider_id)
+        provider.delete()
+
+    return redirect('job_provider_report')

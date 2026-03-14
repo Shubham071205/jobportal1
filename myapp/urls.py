@@ -20,7 +20,8 @@ urlpatterns = [
     path('jobseeker_profile/', views.jobseeker_profile, name='jobseeker_profile'),
 
     # =================IDER =================
-    path('signup-jobprovider/', views.signup_jobprovider, name='signup_jobprovider'),
+    path("signup-jobseeker/", views.signup_jobseeker, name="signup_jobseeker"),
+
     path('login-jobprovider/', views.login_jobprovider, name='login_jobprovider'),
     path('jobseeker/dashboard/', views.dashboard_jobseeker, name='dashboard_jobseeker'),
 
@@ -89,6 +90,8 @@ urlpatterns = [
 
     path('admin/view-users/', views.admin_view_users, name='admin_view_users'),
     path('admin/manage-jobs/', views.admin_manage_jobs, name='admin_manage_jobs'),
+
+    path("delete-provider/<int:provider_id>/", views.delete_provider, name="delete_provider"),
 
 ]
 

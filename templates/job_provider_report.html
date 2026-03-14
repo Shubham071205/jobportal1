@@ -66,6 +66,7 @@
         th, td {
             padding: 12px;
             border-bottom: 1px solid #eee;
+            text-align: center;
         }
 
         th {
@@ -75,6 +76,21 @@
 
         tr:hover {
             background: #f1f1f1;
+        }
+
+        /* DELETE BUTTON */
+
+        .delete-btn {
+            background: #dc3545;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #b02a37;
         }
 
     </style>
@@ -106,6 +122,7 @@
         <th>Industry</th>
         <th>Company Size</th>
         <th>Location</th>
+        <th>Action</th>
     </tr>
 
     {% for p in providers %}
@@ -116,12 +133,24 @@
             <td>{{ p.company_profile.industry }}</td>
             <td>{{ p.company_profile.company_size }}</td>
             <td>{{ p.company_profile.location }}</td>
+
+            <td>
+                <form method="POST" action="{% url 'delete_provider' p.id %}">
+                    {% csrf_token %}
+                    <button class="delete-btn" onclick="return confirm('Delete this provider?')">
+                        Delete
+                    </button>
+                </form>
+            </td>
+
         </tr>
+
     {% empty %}
         <tr>
-            <td colspan="6">No providers found.</td>
+            <td colspan="7">No providers found.</td>
         </tr>
     {% endfor %}
+
 </table>
 
 </body>
