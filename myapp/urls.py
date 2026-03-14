@@ -6,7 +6,7 @@ urlpatterns = [
     path('home/', views.home, name='home'),
 
     # ================= JOB SEEKER =================
-    path('signup-jobseeker/', views.signup_jobseeker, name='signup_jobseeker'),
+    path('signup-jobseeker/', views.signup_jobseeker, name='signup-jobseeker'),
     path('login-jobseeker/', views.login_jobseeker, name='login_jobseeker'),
     path(
         'dashboard_jobseeker/',
@@ -81,6 +81,7 @@ urlpatterns = [
     path("reports/job-providers/", views.job_provider_report, name="job_provider_report"),
     path("reports/jobs/", views.job_report, name="job_report"),
     path("reports/download/jobseekers/", views.download_job_seekers, name="download_job_seekers"),
+    path('delete-user/<int:user_id>/', views.delete_user, name='delete_user'),
 
     path("reports/download/providers/", views.download_job_providers, name="download_job_providers"),
 
@@ -88,5 +89,6 @@ urlpatterns = [
 
     path('admin/view-users/', views.admin_view_users, name='admin_view_users'),
     path('admin/manage-jobs/', views.admin_manage_jobs, name='admin_manage_jobs'),
+
 ]
 

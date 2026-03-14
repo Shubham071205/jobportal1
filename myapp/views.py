@@ -27,35 +27,35 @@ def home(request):
 # JOB SEEKER
 # =====================================================
 
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib import messages
+
 def signup_jobseeker(request):
     if request.method == "POST":
+        username = request.POST.get("username")
         fullname = request.POST.get("fullname")
         email = request.POST.get("email")
         password = request.POST.get("password")
 
-        if not fullname or not email or not password:
-            messages.error(request, "All fields required")
-            return render(request, "signup_jobseeker.html")
-
-        if User.objects.filter(username=email).exists():
-            messages.error(request, "Email already registered")
-            return render(request, "signup_jobseeker.html")
+        # check if username exists
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists")
+            return redirect("signup-jobseeker")
 
         user = User.objects.create_user(
-            username=email,
+            username=username,
             email=email,
-            password=password,
-            first_name=fullname
+            password=password
         )
 
-        JobSeekerProfile.objects.create(user=user)
+        user.first_name = fullname
+        user.save()
 
-        CompanyProfile.objects.create(user=user)
-        login(request, user)
-        return redirect("dashboard_jobseeker")
+        return redirect("login-jobseeker")
 
     return render(request, "signup_jobseeker.html")
-
 
 def login_jobseeker(request):
     if request.method == "POST":
@@ -486,9 +486,18 @@ def admin_reports_menu(request):
     return render(request, "admin_reports_menu.html")
 
 
+from django.contrib.auth.models import User
+from django.shortcuts import render
+
 def job_seeker_report(request):
-    seekers = User.objects.filter(seeker_profile__isnull=False)
-    return render(request, "job_seeker_report.html", {"seekers": seekers})
+    seekers = User.objects.filter(
+        is_staff=False,
+        is_superuser=False
+    )
+
+    return render(request, "job_seeker_report.html", {
+        "seekers": seekers
+    })
 
 
 def job_provider_report(request):
@@ -652,3 +661,15 @@ def jobseeker_search(request):
     }
 
     return render(request, "jobseeker_search.html", context)
+
+
+from django.contrib.auth.models import User
+from django.shortcuts import redirect
+
+
+def delete_user(request, user_id):
+    if request.method == "POST":
+        user = User.objects.get(id=user_id)
+        user.delete()
+
+    return redirect('job_seekers_report')

@@ -1,68 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-</head>
+    <title>Job Seeker Signup</title>
 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* MAIN CONTAINER */
+        .main {
+            width: 950px;
+            height: 560px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(14px);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            display: flex;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* LEFT PANEL */
+        .left {
+            flex: 1;
+            padding: 60px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .left h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .left p {
+            font-size: 15px;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
+        /* RIGHT PANEL */
+        .right {
+            width: 400px;
+            background: white;
+            padding: 40px 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .right h2 {
+            text-align: center;
+            color: #203a43;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #203a43;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .login {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 13px;
+        }
+
+        .login a {
+            color: #203a43;
+            text-decoration: underline;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .main {
+                width: 95%;
+                height: auto;
+                flex-direction: column;
+            }
+
+            .right {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
 <body>
 
-<!-- Navbar -->
-<div>
-    <h1>Admin Dashboard</h1>
+<div class="main">
 
-    <!-- Report Button -->
-    <a href="{% url 'admin_reports_menu' %}">Report</a>
-
-    <!-- Logout Button -->
-    <a href="{% url 'admin_logout' %}">Logout</a>
+    <!-- LEFT CONTENT -->
+    <div class="left">
+        <h1>Create Your Account</h1>
+        <p>
+            Join Job Portal and unlock access to verified job opportunities.
+            Build your career, apply with confidence, and grow professionally.
+        </p>
     </div>
 
-<hr>
+    <!-- RIGHT SIGNUP FORM -->
+    <div class="right">
+        <h2>Job Seeker Signup</h2>
 
-<!-- Welcome Message -->
-<div>
-    <h2>Welcome, {{ admin_username }}!</h2>
-    <p>You are logged in as Administrator.</p>
-</div>
+        <form method="POST">
+            {% csrf_token %}
 
-<hr>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="text" name="fullname" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
 
-<!-- Stats Section -->
-<div>
-    <h3>{{ total_users }}</h3>
-    <p>Total Users</p>
+            <button type="submit">Sign Up</button>
 
-    <h3>{{ total_job_seekers }}</h3>
-    <p>Job Seekers</p>
+        </form>
 
-    <h3>{{ total_job_providers }}</h3>
-    <p>Job Providers</p>
-
-    <h3>{{ total_jobs }}</h3>
-    <p>Total Jobs</p>
+        <div class="login">
+            Already have an account?
+            <a href="/login-jobseeker/">Login</a>
+        </div>
     </div>
 
-<hr>
-
-<!-- Quick Links -->
-<div>
-    <h2>Quick Actions</h2>
-    <a href="/admin/" target="_blank">Django Admin Panel</a>
 </div>
-
-<script>
-    console.log("Admin Dashboard loaded");
-    console.log("Admin:", "{{ admin_username }}");
-
-    // Auto-refresh page every 60 seconds
-    setTimeout(function () {
-        location.reload();
-    }, 60000);
-</script>
 
 </body>
-
 </html>

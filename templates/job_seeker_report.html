@@ -18,21 +18,34 @@
         .actions {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        button {
+        .btn {
             padding: 10px 16px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
-            background: linear-gradient(45deg, #28a745, #20c997);
             color: white;
+            text-decoration: none;
         }
 
-        button:hover {
+        .download {
+            background: linear-gradient(45deg, #28a745, #20c997);
+        }
+
+        .add {
+            background: linear-gradient(45deg, #007bff, #00c6ff);
+        }
+
+        .delete {
+            background: red;
+        }
+
+        .btn:hover {
             transform: translateY(-2px);
+            opacity: 0.9;
         }
 
         .back {
@@ -53,6 +66,7 @@
         th, td {
             padding: 12px;
             border-bottom: 1px solid #eee;
+            text-align: center;
         }
 
         th {
@@ -63,23 +77,40 @@
         tr:hover {
             background: #f1f1f1;
         }
+
+        .top-buttons {
+            display: flex;
+            gap: 10px;
+        }
     </style>
 </head>
 
 <body>
 
 <div class="actions">
+
     <a href="{% url 'admin_reports_menu' %}" class="back">⬅ Back</a>
 
-    <!-- DOWNLOAD BUTTON -->
-    <form action="{% url 'download_job_seekers' %}" method="get">
-        <button type="submit">⬇ Download Report</button>
-    </form>
+    <div class="top-buttons">
+
+        <!-- ADD USER -->
+
+
+        <!-- DOWNLOAD REPORT -->
+        <form action="{% url 'download_job_seekers' %}" method="get">
+            <button type="submit" class="btn download">
+                ⬇ Download Report
+            </button>
+        </form>
+
+    </div>
+
 </div>
 
 <h1>Job Seeker Report</h1>
 
 <table>
+
     <tr>
         <th>ID</th>
         <th>Name</th>
@@ -87,9 +118,11 @@
         <th>Phone</th>
         <th>Location</th>
         <th>Skills</th>
+        <th>Action</th>
     </tr>
 
     {% for s in seekers %}
+
         <tr>
             <td>{{ s.id }}</td>
             <td>{{ s.username }}</td>
@@ -97,12 +130,30 @@
             <td>{{ s.seeker_profile.phone }}</td>
             <td>{{ s.seeker_profile.location }}</td>
             <td>{{ s.seeker_profile.skills }}</td>
+
+            <td>
+
+                <!-- DELETE USER -->
+                <form action="{% url 'delete_user' s.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button class="btn delete"
+                            onclick="return confirm('Are you sure you want to delete this user?')">
+                        Delete
+                    </button>
+                </form>
+
+            </td>
+
         </tr>
+
     {% empty %}
+
         <tr>
-            <td colspan="6">No job seekers found.</td>
+            <td colspan="7">No job seekers found.</td>
         </tr>
+
     {% endfor %}
+
 </table>
 
 </body>
