@@ -618,3 +618,37 @@ def jobprovider_dashboard(request):
     }
 
     return render(request, 'jobprovider_dashboard.html', context)
+
+
+from django.shortcuts import render
+from .models import Job
+
+from django.shortcuts import render
+from .models import Job
+
+
+def jobseeker_search(request):
+    jobs = Job.objects.all()
+
+    query = request.GET.get('q')
+    location = request.GET.get('location')
+    salary = request.GET.get('salary')
+    job_type = request.GET.get('job_type')
+
+    if query:
+        jobs = jobs.filter(title__icontains=query)
+
+    if location:
+        jobs = jobs.filter(location__icontains=location)
+
+    if salary:
+        jobs = jobs.filter(salary__gte=salary)
+
+    if job_type:
+        jobs = jobs.filter(job_type=job_type)
+
+    context = {
+        "jobs": jobs
+    }
+
+    return render(request, "jobseeker_search.html", context)

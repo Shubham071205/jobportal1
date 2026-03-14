@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 # =====================================
 
 class Job(models.Model):
+
     provider = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -17,11 +18,22 @@ class Job(models.Model):
     description = models.TextField()
 
     location = models.CharField(max_length=100)
-    salary = models.CharField(max_length=100, blank=True)
+
+    salary = models.IntegerField(blank=True, null=True)
+
+    job_type = models.CharField(
+        max_length=50,
+        choices=[
+            ("Full Time", "Full Time"),
+            ("Part Time", "Part Time"),
+            ("Internship", "Internship"),
+            ("Remote", "Remote")
+        ],
+        default="Full Time"
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # auto maintained counter
     applicants = models.IntegerField(default=0)
 
     class Meta:

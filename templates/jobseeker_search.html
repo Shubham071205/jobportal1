@@ -11,16 +11,17 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: Poppins, sans-serif;
         }
 
         body {
-            display: flex; /* IMPORTANT */
+            display: flex;
             background: linear-gradient(120deg, #e0eafc, #cfdef3);
             min-height: 100vh;
         }
 
         /* SIDEBAR */
+
         .sidebar {
             width: 230px;
             background: #203a43;
@@ -48,34 +49,37 @@
             background: #2c5364;
         }
 
-        /* MAIN CONTENT */
+        /* MAIN */
+
         .main {
             flex: 1;
             padding: 40px 20px;
         }
 
         /* HEADER */
+
         .header {
             text-align: center;
             margin-bottom: 30px;
         }
 
         .header h1 {
-            font-weight: 600;
             color: #203a43;
         }
 
         /* SEARCH BAR */
+
         .search-box {
             display: flex;
-            justify-content: center;
             gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
             margin-bottom: 30px;
         }
 
-        .search-box input {
-            width: 320px;
-            padding: 12px 15px;
+        .search-box input,
+        .search-box select {
+            padding: 12px;
             border-radius: 30px;
             border: none;
             outline: none;
@@ -96,6 +100,7 @@
         }
 
         /* JOB GRID */
+
         .jobs {
             max-width: 900px;
             margin: auto;
@@ -104,6 +109,7 @@
         }
 
         /* JOB CARD */
+
         .job {
             background: white;
             padding: 20px;
@@ -138,7 +144,9 @@
         }
 
         /* MOBILE */
+
         @media (max-width: 768px) {
+
             body {
                 flex-direction: column;
             }
@@ -149,9 +157,6 @@
                 justify-content: space-around;
             }
 
-            .main {
-                padding: 20px;
-            }
         }
 
     </style>
@@ -160,16 +165,22 @@
 <body>
 
 <!-- SIDEBAR -->
+
 <div class="sidebar">
+
     <h2>Job Seeker</h2>
+
     <a href="{% url 'dashboard_jobseeker' %}">Dashboard</a>
     <a href="{% url 'jobseeker_search' %}">Search Jobs</a>
     <a href="{% url 'jobseeker_applications' %}">My Applications</a>
     <a href="{% url 'jobseeker_profile' %}">My Profile</a>
     <a href="{% url 'logout' %}">Logout</a>
+
 </div>
 
-<!-- MAIN CONTENT -->
+
+<!-- MAIN -->
+
 <div class="main">
 
     <div class="header">
@@ -177,25 +188,42 @@
     </div>
 
     <form method="GET" class="search-box">
-        <input type="text" name="q" placeholder="Search job..." value="{{ query }}">
+
+        <input type="text" name="q" placeholder="Job Title">
+
+        <input type="text" name="location" placeholder="Location">
+
+        <input type="number" name="salary" placeholder="Minimum Salary">
+
+
         <button type="submit">Search</button>
+
     </form>
 
+
     <div class="jobs">
+
         {% for job in jobs %}
+
             <div class="job">
+
                 <div>
                     <strong>{{ job.title }}</strong><br>
-                    <span>{{ job.provider.first_name }} • {{ job.location }}</span>
+                    <span>{{ job.provider.first_name }} • {{ job.location }} • ₹{{ job.salary }} • {{ job.job_type }}</span>
                 </div>
 
                 <a href="{% url 'job_detail' job.id %}">
                     <button>View</button>
                 </a>
+
             </div>
+
         {% empty %}
+
             <p style="text-align:center;color:#555;">No jobs found.</p>
+
         {% endfor %}
+
     </div>
 
 </div>
