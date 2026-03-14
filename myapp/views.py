@@ -264,14 +264,18 @@ def jobprovider_dashboard(request):
 
 
 @login_required(login_url="login_jobprovider")
+@login_required(login_url="login_jobprovider")
 def jobprovider_post_job(request):
     if request.method == "POST":
+        salary = request.POST.get("salary").replace(",", "")
+        salary = int(salary)
+
         Job.objects.create(
             provider=request.user,
             title=request.POST.get("title"),
             description=request.POST.get("description"),
             location=request.POST.get("location"),
-            salary=request.POST.get("salary"),
+            salary=salary,
         )
 
         messages.success(request, "Job posted!")
