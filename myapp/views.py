@@ -234,7 +234,7 @@ def signup_jobprovider(request):
         login(request, user)
         return redirect("jobprovider_dashboard")
 
-    return render(request, "signup_jobseeker.html")
+    return render(request, "signup_jobprovider.html")
 
 
 def login_jobprovider(request):

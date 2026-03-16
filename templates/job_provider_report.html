@@ -78,12 +78,22 @@
             background: #f1f1f1;
         }
 
+        /* ADD BUTTON */
         .add-btn {
-            background-color: green;
+            background: linear-gradient(45deg, #007bff, #00c6ff);
             color: white;
             border: none;
-            padding: 6px 10px;
-            margin-right: 5px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .add-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, .2);
         }
 
         /* DELETE BUTTON */
@@ -112,14 +122,23 @@
         ⬅ Back to Reports
     </a>
 
-    <form action="{% url 'download_job_providers' %}" method="get">
-        <button class="download-btn" type="submit">
-            ⬇ Download Report
-        </button>
-    </form>
+    <div style="display:flex; gap:10px;">
+
+        <!-- ADD JOB PROVIDER -->
+        <a href="{% url 'signup_jobprovider' %}">
+            <button class="add-btn">➕ Add</button>
+        </a>
+
+        <!-- DOWNLOAD REPORT -->
+        <form action="{% url 'download_job_providers' %}" method="get">
+            <button class="download-btn" type="submit">
+                ⬇ Download Report
+            </button>
+        </form>
+
+    </div>
 
 </div>
-
 <h1>Job Provider Report</h1>
 
 <table>
@@ -144,11 +163,6 @@
 
             <td>
 
-                <a href="{% url 'signup_jobprovider' %}">
-                    <button type="button" class="add-btn">
-                        Add
-                    </button>
-                </a>
 
                 <form method="POST" action="{% url 'delete_provider' p.id %}" style="display:inline;">
                     {% csrf_token %}
