@@ -78,6 +78,14 @@
             background: #f1f1f1;
         }
 
+        .add-btn {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            margin-right: 5px;
+        }
+
         /* DELETE BUTTON */
 
         .delete-btn {
@@ -135,12 +143,20 @@
             <td>{{ p.company_profile.location }}</td>
 
             <td>
-                <form method="POST" action="{% url 'delete_provider' p.id %}">
+
+                <a href="{% url 'signup_jobprovider' %}">
+                    <button type="button" class="add-btn">
+                        Add
+                    </button>
+                </a>
+
+                <form method="POST" action="{% url 'delete_provider' p.id %}" style="display:inline;">
                     {% csrf_token %}
                     <button class="delete-btn" onclick="return confirm('Delete this provider?')">
                         Delete
                     </button>
                 </form>
+
             </td>
 
         </tr>

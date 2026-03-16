@@ -4,106 +4,93 @@
     <title>Job Seeker Report</title>
 
     <style>
+
         body {
             font-family: Poppins, sans-serif;
-            background: #f4f6f9;
+            background: #eef2f7;
             padding: 30px;
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .actions {
+        /* Top Bar */
+        .top-bar {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-        }
-
-        .btn {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            color: white;
-            text-decoration: none;
-        }
-
-        .download {
-            background: linear-gradient(45deg, #28a745, #20c997);
-        }
-
-        .add {
-            background: linear-gradient(45deg, #007bff, #00c6ff);
-        }
-
-        .delete {
-            background: red;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
         }
 
         .back {
             text-decoration: none;
-            color: #007bff;
-            font-weight: 500;
+            color: #28a745;
+            font-weight: 600;
         }
 
+        /* Buttons */
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .download {
+            background: #28a745;
+        }
+
+        .add {
+            background: green;
+        }
+
+        .delete {
+            background: #dc3545;
+        }
+
+        /* Title */
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        /* Table */
         table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
             border-radius: 10px;
             overflow: hidden;
-        }
-
-        th, td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .15);
         }
 
         th {
-            background: #007bff;
+            background: #28a745;
             color: white;
+            padding: 12px;
+        }
+
+        td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
         }
 
         tr:hover {
-            background: #f1f1f1;
+            background: #f5f5f5;
         }
 
-        .top-buttons {
-            display: flex;
-            gap: 10px;
-        }
     </style>
 </head>
 
 <body>
 
-<div class="actions">
+<div class="top-bar">
 
-    <a href="{% url 'admin_reports_menu' %}" class="back">⬅ Back</a>
+    <a href="{% url 'admin_reports_menu' %}" class="back">⬅ Back to Reports</a>
 
-    <div class="top-buttons">
-
-        <!-- ADD USER -->
-
-
-        <!-- DOWNLOAD REPORT -->
-        <form action="{% url 'download_job_seekers' %}" method="get">
-            <button type="submit" class="btn download">
-                ⬇ Download Report
-            </button>
-        </form>
-
-    </div>
+    <form action="{% url 'download_job_seekers' %}" method="get">
+        <button class="btn download">⬇ Download Report</button>
+    </form>
 
 </div>
 
@@ -133,11 +120,16 @@
 
             <td>
 
-                <!-- DELETE USER -->
+                <!-- ADD BUTTON -->
+                <a href="{% url 'signup_jobseeker' %}">
+                    <button class="btn add">Add</button>
+                </a>
+
+                <!-- DELETE BUTTON -->
                 <form action="{% url 'delete_user' s.id %}" method="post" style="display:inline;">
                     {% csrf_token %}
                     <button class="btn delete"
-                            onclick="return confirm('Are you sure you want to delete this user?')">
+                            onclick="return confirm('Delete this user?')">
                         Delete
                     </button>
                 </form>
@@ -149,7 +141,7 @@
     {% empty %}
 
         <tr>
-            <td colspan="7">No job seekers found.</td>
+            <td colspan="7">No job seekers found</td>
         </tr>
 
     {% endfor %}
