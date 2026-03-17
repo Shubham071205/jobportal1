@@ -167,6 +167,11 @@ def jobseeker_profile(request):
     # ✅ Detect edit mode
     edit_mode = request.GET.get("edit") == "true"
 
+    def update_profile(request):
+        if request.method == "POST":
+            # update logic
+            messages.success(request, "Profile updated successfully!")
+            return redirect("jobseeker_dashboard")
     if request.method == "POST":
 
         request.user.first_name = request.POST.get("fullname")
@@ -278,7 +283,7 @@ def jobprovider_post_job(request):
             salary=salary,
         )
 
-        messages.success(request, "Job posted!")
+        messages.success(request, "Job posted successfully!")
         return redirect("jobprovider_dashboard")
 
     return render(request, "jobprovider_post_job.html")

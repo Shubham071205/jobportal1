@@ -268,16 +268,6 @@
             <p>Access your company dashboard</p>
         </div>
 
-        <!-- Messages -->
-        <div class="messages">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
 
         <!-- Login Form -->
         <form method="POST" action="{% url 'login_jobprovider' %}">
