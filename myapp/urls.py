@@ -1,4 +1,5 @@
 from django.urls import path
+
 from . import views
 
 urlpatterns = [
@@ -6,24 +7,19 @@ urlpatterns = [
     path('home/', views.home, name='home'),
 
     # ================= JOB SEEKER =================
-    path('signup-jobseeker/', views.signup_jobseeker, name='signup-jobseeker'),
-    path('login-jobseeker/', views.login_jobseeker, name='login_jobseeker'),
-    path(
-        'dashboard_jobseeker/',
-        views.dashboard_jobseeker,
-        name='jobseeker_dashborad'
-    ),
+    path("signup-jobseeker/", views.signup_jobseeker, name="signup_jobseeker"),
 
+    path('login-jobseeker/', views.login_jobseeker, name='login_jobseeker'),
+    path('jobseeker/dashboard/', views.dashboard_jobseeker, name='dashboard_jobseeker'),
     # ✅ ADD THESE
     path('jobseeker_search/', views.jobseeker_search, name='jobseeker_search'),
     path('jobseeker_applications/', views.jobseeker_applications, name='jobseeker_applications'),
     path('jobseeker_profile/', views.jobseeker_profile, name='jobseeker_profile'),
 
     # =================IDER =================
-    path("signup-jobseeker/", views.signup_jobseeker, name="signup_jobseeker"),
 
-    path('login-jobprovider/', views.login_jobprovider, name='login_jobprovider'),
-    path('jobseeker/dashboard/', views.dashboard_jobseeker, name='dashboard_jobseeker'),
+    path('login-jobprovider/', views.login_jobprovider, name='login-jobprovider'),
+    path('jobprovider/dashboard/', views.dashboard_jobseeker, name='dashboard_jobseeker'),
 
     # ================= LOGOUT =================
     path('logout/', views.logout_view, name='logout'),
@@ -38,8 +34,8 @@ urlpatterns = [
     path('company-profile/', views.jobprovider_company_profile, name='jobprovider_company_profile'),
     path('jobprovider/settings/', views.jobprovider_settings, name='jobprovider_settings'),
     # ================= JOB PROVIDER =================
-    path('signup-jobprovider/', views.signup_jobprovider, name='signup_jobprovider'),
-    path('login-jobprovider/', views.login_jobprovider, name='login_jobprovider'),
+    path('signup_jobprovider/', views.signup_jobprovider, name='signup_jobprovider'),
+    path('login_jobprovider/', views.login_jobprovider, name='login_jobprovider'),
 
     path(
         'dashboard_jobprovider/',

@@ -1,14 +1,5 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from django.contrib import messages
-from django.http import HttpResponse
-import csv
-from .models import CompanyProfile
-from .models import JobSeekerProfile
-from .models import Job, JobSeekerProfile, CompanyProfile, Application
 
 
 # =====================================================
@@ -28,8 +19,6 @@ def home(request):
 # =====================================================
 
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib import messages
 
 def signup_jobseeker(request):
@@ -57,31 +46,36 @@ def signup_jobseeker(request):
 
     return render(request, "signup_jobseeker.html")
 
+
 def login_jobseeker(request):
     if request.method == "POST":
         email = request.POST.get("username")
         password = request.POST.get("password")
 
-        user = authenticate(request, username=email, password=password)
+        try:
+            # Find user by email
+            user_obj = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, "Invalid email or password")
+            return render(request, "login_jobseeker.html")
+
+        # Authenticate using username
+        user = authenticate(request, username=user_obj.username, password=password)
 
         if user and not user.is_staff:
             login(request, user)
             return redirect("dashboard_jobseeker")
 
-        messages.error(request, "Invalid credentials")
+        messages.error(request, "Invalid email or password")
 
     return render(request, "login_jobseeker.html")
 
 
-from django.utils.timezone import now
-from django.db.models import Count
-
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from .models import Job, Application
+from .models import Application
 
 
-@login_required(login_url='login_jobseeker')
+@login_required(login_url='login-jobseeker')
 def dashboard_jobseeker(request):
     # All jobs posted by providers
     recommended_jobs = Job.objects.all().order_by('-created_at')[:10]
@@ -269,7 +263,6 @@ def jobprovider_dashboard(request):
 
 
 @login_required(login_url="login_jobprovider")
-@login_required(login_url="login_jobprovider")
 def jobprovider_post_job(request):
     if request.method == "POST":
         salary = request.POST.get("salary").replace(",", "")
@@ -374,9 +367,6 @@ def admin_login(request):
     return render(request, "admin_login.html")
 
 
-from django.contrib.auth.models import User
-from .models import Job, JobSeekerProfile, CompanyProfile
-
 def admin_dashboard(request):
     if not request.session.get("admin_logged_in"):
         return redirect("admin_login")
@@ -434,11 +424,6 @@ def jobprovider_settings(request):
     return render(request, 'jobprovider_settings.html')
 
 
-from django.contrib.auth.models import User
-from django.shortcuts import render
-from .models import JobSeekerProfile, CompanyProfile
-
-
 def admin_view_users(request):
     users = User.objects.all().order_by("-date_joined")
 
@@ -469,10 +454,6 @@ def admin_view_users(request):
     })
 
 
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Job
-
-
 def admin_manage_jobs(request):
     jobs = Job.objects.select_related("provider").all()
 
@@ -488,15 +469,9 @@ def admin_delete_job(request, job_id):
     return redirect("admin_manage_jobs")
 
 
-from django.shortcuts import render
-
-
 def admin_reports_menu(request):
     return render(request, "admin_reports_menu.html")
 
-
-from django.contrib.auth.models import User
-from django.shortcuts import render
 
 def job_seeker_report(request):
     seekers = User.objects.filter(
@@ -525,8 +500,6 @@ def admin_reports_menu(request):
 
 import csv
 from django.http import HttpResponse
-from django.contrib.auth.models import User
-from .models import JobSeekerProfile
 
 
 def download_job_seekers(request):
@@ -583,9 +556,6 @@ def download_job_providers(request):
     return response
 
 
-from .models import Job
-
-
 def download_jobs(request):
     import csv
     from django.http import HttpResponse
@@ -621,7 +591,6 @@ def download_jobs(request):
 
 
 from django.db.models import Sum
-from .models import Job
 
 
 def jobprovider_dashboard(request):
@@ -637,9 +606,6 @@ def jobprovider_dashboard(request):
 
     return render(request, 'jobprovider_dashboard.html', context)
 
-
-from django.shortcuts import render
-from .models import Job
 
 from django.shortcuts import render
 from .models import Job
@@ -672,11 +638,8 @@ def jobseeker_search(request):
     return render(request, "jobseeker_search.html", context)
 
 
-from django.shortcuts import redirect
 from .models import JobSeekerProfile
 
-from django.shortcuts import redirect, get_object_or_404
-from django.contrib.auth.models import User
 
 def delete_user(request, user_id):
     if request.method == "POST":
