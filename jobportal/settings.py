@@ -1,13 +1,21 @@
 from pathlib import Path
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECURITY
+# SECRET_KEY should be stored as an environment variable on Render.
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-local-development-key-change-this'
+)
 
 DEBUG = False
 
-ALLOWED_HOSTS = [*]
+# Allows your Render domain and local development.
+ALLOWED_HOSTS = ['*']
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -17,11 +25,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'myapp',  # ✅ VERY IMPORTANT
+    'myapp',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # WhiteNoise serves static files on deployment.
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -30,7 +43,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'jobportal.urls'
+
 
 TEMPLATES = [
     {
@@ -48,8 +63,13 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'jobportal.wsgi.application'
 
+
+# DATABASE
+# Keeping SQLite for the first deployment so your existing
+# project/database functionality is not changed.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -57,29 +77,58 @@ DATABASES = {
     }
 }
 
+
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'
+    },
 ]
 
+
 LANGUAGE_CODE = 'en-us'
+
 TIME_ZONE = 'UTC'
+
 USE_I18N = True
+
 USE_TZ = True
 
+
+# STATIC FILES
 STATIC_URL = 'static/'
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_STORAGE = (
+    'whitenoise.storage.CompressedManifestStaticFilesStorage'
+)
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ✅ LOGIN / LOGOUT FIX
+
+# LOGIN / LOGOUT
 LOGIN_URL = '/login-jobprovider/'
+
 LOGIN_REDIRECT_URL = '/jobprovider/dashboard/'
+
 LOGOUT_REDIRECT_URL = '/'
 
-# settings.py
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # or 'django.contrib.sessions.backends.cache'
+
+# SESSION SETTINGS
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 SESSION_COOKIE_NAME = 'sessionid'
+
 SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
+
 SESSION_SAVE_EVERY_REQUEST = True
