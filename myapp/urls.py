@@ -7,7 +7,7 @@ urlpatterns = [
     path('home/', views.home, name='home'),
 
     # ================= JOB SEEKER =================
-    path("signup-jobseeker/", views.signup_jobseeker, name="signup_jobseeker"),
+    path("signup_jobseeker/", views.signup_jobseeker, name="signup_jobseeker"),
 
     path('login-jobseeker/', views.login_jobseeker, name='login_jobseeker'),
     path('jobseeker/dashboard/', views.dashboard_jobseeker, name='dashboard_jobseeker'),
